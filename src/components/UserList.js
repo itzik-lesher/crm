@@ -14,7 +14,7 @@ const UserList = () => {
         setState({
           ...state,
           users: response.data,
-        });
+        });///
       })
       .catch((error) => {
         console.log(error);
@@ -25,7 +25,7 @@ const UserList = () => {
     <>
       User List
       <pre>{JSON.stringify(state.users)}</pre>
-      <pre>{JSON.stringify(state.users,null,2)}</pre>
+      <pre>{JSON.stringify(state.users, null, 2)}</pre>
       <Container className="mt-3">
         <Row>
           <Col>
