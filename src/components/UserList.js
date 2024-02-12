@@ -1,24 +1,23 @@
-import React, { useEffect ,useLayoutEffect} from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import { UserService } from "../services/UserService";
 import { Container, Row, Col, Table } from "react-bootstrap";
 
 const UserList = () => {
   const [state, setState] = useState({
-    crmId:{},
-    crmName:{},
+    crmId: {},
+    crmName: {},
     users: [],
-    formFields:[],
-    phonePositionIndex:0,
-    formFieldsContet:[]
+    formFields: [],
+    phonePositionIndex: 0,
+    formFieldsContet: [],
   });
- // crmId: crm_id,
- // crmName: crm_name,
-//  jsonData: data,
-///  formFields: Object.keys(data[0]),
-//  phonePositionIndex: Object.keys(data[0]).indexOf("phone"),
-//  formFieldsContet: data.map((obj) => {
-
+  // crmId: crm_id,
+  // crmName: crm_name,
+  //  jsonData: data,
+  ///  formFields: Object.keys(data[0]),
+  //  phonePositionIndex: Object.keys(data[0]).indexOf("phone"),
+  //  formFieldsContet: data.map((obj) => {
 
   /*
   useEffect(() => {
@@ -36,7 +35,7 @@ const UserList = () => {
 */
   useLayoutEffect(() => {
     const api_url = window.location.href;
-    fetch("StudentsData.json", {
+    fetch("users.json", {
       method: "GET",
       mode: "no-cors",
       cache: "no-store",
@@ -55,7 +54,7 @@ const UserList = () => {
         // remove first 2 properties from data[0] crm_id and crm_name from data
         delete data[0].form_name_id;
         delete data[0].form_name;
-        
+
         //data.shift();
         console.log("data neto follow= " + data);
         console.log(JSON.stringify(data, null, 2));
@@ -101,7 +100,7 @@ const UserList = () => {
           <Col>
             <Table striped border hover className="shadow-lg text-center">
               <thead>
-               {/*} <tr>
+                {/*} <tr>
                   <th>SNO</th>
                   <th>Name</th>
                   <th>Email</th>
@@ -110,14 +109,11 @@ const UserList = () => {
                   <th>Location</th>
                 </tr>
                */}
-               <tr>
-                
-                {state.formFields.map((field)=>{
-                    return(
-                      <th>{field}</th>
-                    )
-                })}
-               </tr>
+                <tr>
+                  {state.formFields.map((field) => {
+                    return <th>{field}</th>;
+                  })}
+                </tr>
               </thead>
               <tbody>
                 {/*{state.users.length > 0 &&
@@ -133,9 +129,9 @@ const UserList = () => {
                     );
                   })}
                   */}
-                  <tr>
-                    <td>{state.users.name}</td>
-                  </tr>
+                <tr>
+                  <td>{state.users.name}</td>
+                </tr>
               </tbody>
             </Table>
           </Col>

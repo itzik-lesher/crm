@@ -9,16 +9,16 @@
 			// this is called by the LP - not React
            function get_data() {
                //$name = $_POST['name'];
-               ///$file_name='StudentsData'. '.json';
+               ///$file_name='users'. '.json';
 			      // Set filename according if its development or production
                $url= $_SERVER['HTTP_HOST']; 
                $url.= $_SERVER['REQUEST_URI']; 
                // Add random hash to file name
                //$rand_safix =  rand(101, 999); 
                if (strpos($url, 'localhost') === false ){
-                 $file_name = '../build/StudentsData' . '.json';
+                 $file_name = '../build/users' . '.json';
                }else{
-                  $file_name = '../public/StudentsData' .'.json';
+                  $file_name = '../public/users' .'.json';
                }
                
                // remove 2 first array variables: id and hebrew  name 
@@ -49,7 +49,7 @@
                }
            } // function get_data() {
          
-           ///$file_name='StudentsData'. '.json';
+           ///$file_name='users'. '.json';
 		   // Set filename according if its development or production
 		   
 		   // if POST came from landing page ajax
@@ -57,14 +57,14 @@
                $url= $_SERVER['HTTP_HOST']; 
                $url.= $_SERVER['REQUEST_URI'];   
 				   if (strpos($url, 'localhost') === false ){
-					 $file_name = '../build/StudentsData' . '.json';
+					 $file_name = '../build/users' . '.json';
 				   }else{
-					  $file_name = '../public/StudentsData' . '.json';
+					  $file_name = '../public/users' . '.json';
 				   }
 				   if(file_put_contents("$file_name", get_data())) {
                   if ($_POST['name'] == 'sim'){
-                     unlink('../public/StudentsData.json');
-                     copy('../public/StudentsDataSimulate.json','../public/StudentsData.json');
+                     unlink('../public/users.json');
+                     copy('../public/usersSimulate.json','../public/users.json');
                   }
 					   echo 'success';
 				   }                
@@ -190,14 +190,14 @@
                 $url.= $_SERVER['REQUEST_URI'];   
 			    if (strpos($url, 'localhost') === false ){
                      // save data files in build enviroment
-                     file_put_contents('../build/StudentsData.json', json_encode($data));
+                     file_put_contents('../build/users.json', json_encode($data));
                      // save form-fileld-file if not exists
                      if (!file_exists('../public/FormFields.json')) {
                         file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
                      }
 				 }else{ 
                        // save data files in local host
-                      file_put_contents('../public/StudentsData.json', json_encode($data));
+                      file_put_contents('../public/users.json', json_encode($data));
                       // save form-fileld-file if not exists
                       if (!file_exists('../public/FormFields.json')) {
                         file_put_contents('../public/FormFields.json', json_encode($form_fields_array));
