@@ -116,19 +116,18 @@ const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {/*{state.users.length > 0 &&
+                {state.users.length > 0 &&
                   state.users.map((user) => {
                     return (
-                      <tr key={user.id}>
-                        <td>{state.user.id}</td>
-                        <td>{state.user.name}</td>
-                        <td>{state.user.email}</td>
-                        <td>{state.user.phone}</td>
-                        <td>{state.user.phone}</td>
+                      <tr key={user.phone}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phone}</td>
+                        <td>{user.time}</td>
                       </tr>
                     );
                   })}
-                  */}
+                  
                 <tr>
                   <td>{state.users.name}</td>
                 </tr>

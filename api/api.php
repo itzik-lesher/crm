@@ -29,7 +29,8 @@
                if(file_exists("$file_name")) { 
                $shifted_variable = array_shift($_POST);
                $shifted_variable = array_shift($_POST);
-               $shifted_variable = array_shift($_POST);			   
+			   // the following is probbaly for 'first-line-exists' which is not used any more
+               /////$shifted_variable = array_shift($_POST);			   
                $form_fields_array = $_POST;  
                $current_data=file_get_contents("$file_name");
                    $array_data=json_decode($current_data, true);
