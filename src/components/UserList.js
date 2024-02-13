@@ -84,12 +84,16 @@ const UserList = () => {
       });
   }, []);
 
+  const checkboxChangedHnadler = (e) => {
+    console.log("click");
+  };
+
   return (
     <>
       User List
       {/*} <pre>{JSON.stringify(state.users)}</pre>
       <pre>{JSON.stringify(state.users,null,2)}</pre>*/}
-      <Container className="mt-3">
+      <Container fluid className="mt-3">
         <Row>
           <Col>
             <h3 className="text-primary">User List</h3>
@@ -101,19 +105,28 @@ const UserList = () => {
             <Table striped border hover className="shadow-lg text-center">
               <thead>
                 <tr>
-                  #
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                  <th>#</th>
                   {state.formFields.map((field) => {
-                    return(
-                       <th>{field}</th>
-                    )
+                    return <th>{field}</th>;
                   })}
                 </tr>
               </thead>
               <tbody>
+                {/* vertical loop */}
                 {state.formFieldsContet.map((userLine, userIndex) => {
                   return (
                     <tr key={userIndex}>
-                      { userIndex + 1 }
+                      <td>
+                        <input
+                          onChange={checkboxChangedHnadler}
+                          type="checkbox"
+                        />
+                      </td>
+                      <td>{userIndex + 1}</td>
+                      {/* horizontal  loop */}
                       {userLine.map((formField) => {
                         return <td>{formField}</td>;
                       })}
