@@ -100,15 +100,6 @@ const UserList = () => {
           <Col>
             <Table striped border hover className="shadow-lg text-center">
               <thead>
-                {/*} <tr>
-                  <th>SNO</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Website</th>
-                  <th>Company</th>
-                  <th>Location</th>
-                </tr>
-               */}
                 <tr>
                   {state.formFields.map((field) => {
                     return <th>{field}</th>;
@@ -116,25 +107,15 @@ const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {state.users.length > 0 &&
-                  state.users.map((user, userIndex) => {
-                    return (
-                      <tr key={userIndex}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
-                        <td>{user.time}</td>
-
-                        {Object.keys(user).map((formField) => {
-                          <td>{Object[formField]}</td>;
-                        })}
-                      </tr>
-                    );
-                  })}
-
-                <tr>
-                  <td>{state.users.name}</td>
-                </tr>
+                {state.formFieldsContet.map((userLine, userIndex) => {
+                  return (
+                    <tr key={userIndex}>
+                      {userLine.map((formField) => {
+                        return <td>{formField}</td>;
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </Table>
           </Col>
