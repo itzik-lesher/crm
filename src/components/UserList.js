@@ -117,17 +117,21 @@ const UserList = () => {
               </thead>
               <tbody>
                 {state.users.length > 0 &&
-                  state.users.map((user) => {
+                  state.users.map((user, userIndex) => {
                     return (
-                      <tr key={user.phone}>
+                      <tr key={userIndex}>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
                         <td>{user.time}</td>
+
+                        {Object.keys(user).map((formField) => {
+                          <td>{Object[formField]}</td>;
+                        })}
                       </tr>
                     );
                   })}
-                  
+
                 <tr>
                   <td>{state.users.name}</td>
                 </tr>
