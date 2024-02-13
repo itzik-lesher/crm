@@ -101,8 +101,11 @@ const UserList = () => {
             <Table striped border hover className="shadow-lg text-center">
               <thead>
                 <tr>
+                  #
                   {state.formFields.map((field) => {
-                    return <th>{field}</th>;
+                    return(
+                       <th>{field}</th>
+                    )
                   })}
                 </tr>
               </thead>
@@ -110,6 +113,7 @@ const UserList = () => {
                 {state.formFieldsContet.map((userLine, userIndex) => {
                   return (
                     <tr key={userIndex}>
+                      { userIndex + 1 }
                       {userLine.map((formField) => {
                         return <td>{formField}</td>;
                       })}
