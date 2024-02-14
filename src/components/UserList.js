@@ -12,6 +12,10 @@ const UserList = () => {
     phonePositionIndex: 0,
     formFieldsContet: [],
   });
+  // holds the deleted lines as array. For instance if we check
+  // checkboxes 2 and 4  deleteArraylist = [2, 4]
+  const [deleteArraylist, setDeleteArrayList] = useState([]);
+
   // crmId: crm_id,
   // crmName: crm_name,
   //  jsonData: data,
@@ -85,7 +89,21 @@ const UserList = () => {
   }, []);
 
   const checkboxChangedHnadler = (e) => {
-    console.log("click");
+    if (e.target.checked) {
+      console.log("chaecked");
+      setDeleteArrayList((deleteArraylist) => {
+        return [...deleteArraylist, parseInt(e.target.id)];
+      });
+
+    } else {
+      console.log("unchaecked");
+      setDeleteArrayList((deleteArraylist) => {
+        return [...deleteArraylist].filter((element) => {
+          return element !== parseInt(e.target.id);
+        });
+      });
+    }
+    console.log("deleteArraylist = " + JSON.stringify(deleteArraylist));
   };
 
   return (
@@ -121,6 +139,7 @@ const UserList = () => {
                     <tr key={userIndex}>
                       <td>
                         <input
+                          id={userIndex + 1}
                           onChange={checkboxChangedHnadler}
                           type="checkbox"
                         />
