@@ -118,7 +118,6 @@ const UserList = () => {
             <p className="fst-italic">oioioi</p>
           </Col>
         </Row>
-        
         <Row>
           <Col>
             <Table striped border hover className="shadow-lg text-center">
