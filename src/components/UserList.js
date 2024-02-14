@@ -6,7 +6,7 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 const UserList = () => {
   const [state, setState] = useState({
     crmId: {},
-    crmName: {},
+    crmName: '',
     users: [],
     formFields: [],
     phonePositionIndex: 0,
@@ -94,7 +94,6 @@ const UserList = () => {
       setDeleteArrayList((deleteArraylist) => {
         return [...deleteArraylist, parseInt(e.target.id)];
       });
-
     } else {
       console.log("unchaecked");
       setDeleteArrayList((deleteArraylist) => {
@@ -104,6 +103,43 @@ const UserList = () => {
       });
     }
     console.log("deleteArraylist = " + JSON.stringify(deleteArraylist));
+  };
+
+  const deleteCheckedUsersHandler = () => {
+    // remove the data lines of deleted users
+    setState((state) => {
+      let newState = { ...state };
+      // save the first line formFieldsContet in case all lines will be
+      // in the following filter function
+      const firstFormFieldsContet = newState.formFieldsContet[0];
+      //const rememberedHeaderColomns = newState.formFields;
+      newState.formFieldsContet = newState.formFieldsContet.filter(
+        (userElement, index) => {
+          // pass through all checkboxes and uncheck them(no matter if checked or not)
+          //!!!document.getElementById((index + 1).toString()).checked = false;
+          return !deleteArraylist.includes(index + 1);
+        }
+      );
+
+      let checkBoxItems = document.querySelectorAll(
+        "tr.first-line-display-block>td>input"
+      );
+      let ids = Array.from(checkBoxItems).map((item, index) => {
+        // uncheck each checkbox
+        document.getElementById((index + 1).toString()).checked = false;
+        // remove also from the deletelist
+        setDeleteArrayList((deleteArraylist) => {
+          return [...deleteArraylist].filter((element) => {
+            return element !== parseInt(index);
+          });
+        });
+      });
+
+      //newState.formFields = rememberedHeaderColomns;
+      //return [...newState, newState.rememberedHeaderColomns];
+      ///!!!!setFormFieldsPermanentet(newState.formFieldsContet);
+      return newState;
+    });
   };
 
   return (
@@ -116,6 +152,17 @@ const UserList = () => {
           <Col>
             <h3 className="text-primary">User List</h3>
             <p className="fst-italic">oioioi</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={3}>
+            <h3 className="text-primary"></h3>
+            <div className="flex">
+              <p className="fst-italic">{state.crmName}</p>
+              <button onClick={deleteCheckedUsersHandler}>
+                מחק שורות מסומנות
+              </button>
+            </div>
           </Col>
         </Row>
         <Row>
