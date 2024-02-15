@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import { UserService } from "../services/UserService";
 import { Container, Row, Col, Table } from "react-bootstrap";
@@ -6,7 +6,7 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 const UserList = () => {
   const [state, setState] = useState({
     crmId: {},
-    crmName: '',
+    crmName: "",
     users: [],
     formFields: [],
     phonePositionIndex: 0,
@@ -15,7 +15,7 @@ const UserList = () => {
   // holds the deleted lines as array. For instance if we check
   // checkboxes 2 and 4  deleteArraylist = [2, 4]
   const [deleteArraylist, setDeleteArrayList] = useState([]);
-
+  const useEffectSaveRef = useRef(true);
   // crmId: crm_id,
   // crmName: crm_name,
   //  jsonData: data,
@@ -88,6 +88,69 @@ const UserList = () => {
       });
   }, []);
 
+  // POST (Save) StudentsData.json in php
+  useEffect(() => {
+    if (useEffectSaveRef.current === true)
+      return;
+    else{
+      useEffectSaveRef.current = true;
+    }
+    // override useEffect 2 or 3 times according to the enviroment
+    let api_url = window.location.href;
+
+    if (api_url.indexOf("localhost") >= 0) {
+      // means localhost
+      ///api_url = "http://localhost/lp/lp-develop/api/api.php";
+      api_url = "http://localhost/lp/lp-develop/crm/api/api.php";
+    } else {
+      // production(the slice works like ../../../api.php)
+      //////api_url = api_url.slice(0, -17) + "/api/api.php";
+      //api_url = api_url.slice(0, -11) + "/api/api.php";
+      api_url = api_url.slice(0, -11) + "/crm/api/api.php";
+    }
+    
+    // allow excution only from the 2 or 5 round
+    //if (dataFetchedRef2.current < 2) {
+    //  dataFetchedRef2.current++;
+    //  return;
+    //}
+    
+    // Create all data including the keys by adding the key
+    // in front of the data for every field
+    let totalUsers = [];
+    //let userObject = {};
+    [...state.formFieldsContet].forEach((user, indexTotal) => {
+      let userObject = {};
+      [...state.formFields].forEach((key, indexUser) => {
+        userObject[key] = user[indexUser];
+      });
+      //totalUsers = [...totalUsers, userObject];
+      totalUsers.push(userObject);
+    });
+    // include the ID and name and first_line_exist of StudentsData.json
+    totalUsers[0] = { form_name: state.crmName, ...totalUsers[0] };
+    totalUsers[0] = { form_name_id: state.crmId, ...totalUsers[0] };
+    totalUsers[0] = {
+      first_line_existance: state.first_line_exist,
+      ...totalUsers[0],
+    };
+   
+    fetch(api_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(totalUsers),
+    })
+      .then((response) => response.text())
+      .then((message) => {
+        // this open alert box on top
+        //alert(message);
+        //setData(message);
+      })
+      .catch((error) => console.error(error));
+  }, [state.formFieldsContet]);
+
   const checkboxChangedHnadler = (e) => {
     if (e.target.checked) {
       console.log("chaecked");
@@ -102,6 +165,7 @@ const UserList = () => {
         });
       });
     }
+
     console.log("deleteArraylist = " + JSON.stringify(deleteArraylist));
   };
 
@@ -115,8 +179,7 @@ const UserList = () => {
       //const rememberedHeaderColomns = newState.formFields;
       newState.formFieldsContet = newState.formFieldsContet.filter(
         (userElement, index) => {
-          // pass through all checkboxes and uncheck them(no matter if checked or not)
-          //!!!document.getElementById((index + 1).toString()).checked = false;
+          // retuen only unchecked lines
           return !deleteArraylist.includes(index + 1);
         }
       );
@@ -127,6 +190,7 @@ const UserList = () => {
       let ids = Array.from(checkBoxItems).map((item, index) => {
         // uncheck each checkbox
         document.getElementById((index + 1).toString()).checked = false;
+
         // remove also from the deletelist
         setDeleteArrayList((deleteArraylist) => {
           return [...deleteArraylist].filter((element) => {
@@ -140,6 +204,8 @@ const UserList = () => {
       ///!!!!setFormFieldsPermanentet(newState.formFieldsContet);
       return newState;
     });
+    // activate useEffect 
+    useEffectSaveRef.current = false;
   };
 
   return (
