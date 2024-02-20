@@ -151,6 +151,41 @@ const UserList = () => {
       .catch((error) => console.error(error));
   }, [state.formFieldsContet]);
 
+  function headerCheckBoxHandler(e) {
+    var checkBoxItems = document.querySelectorAll(
+      "tbody>tr>td>input"
+    );
+    if (e.target.checked) {
+      // check state => move all checkboxes to check state
+      let ids = Array.from(checkBoxItems).map((item, index) => {
+        // check each checkbox
+        document.getElementById((index + 1).toString()).checked = true;
+        // add also the the deletlist
+        setDeleteArrayList((deleteArraylist) => {
+          //return [...deleteArraylist, index];
+          // this solved the problem that the first line remained
+          return [...deleteArraylist, index + 1];
+        });
+      });
+      //setClasname("buttonshow");
+    } else {
+      //uncheck state => => amove all checkboxes to uncheck state
+      let ids = Array.from(checkBoxItems).map((item, index) => {
+        // uncheck each checkbox
+        document.getElementById((index + 1).toString()).checked = false;
+        // remove also from the deletelist
+        setDeleteArrayList((deleteArraylist) => {
+          return [...deleteArraylist].filter((element) => {
+            return element !== parseInt(index);
+          });
+        });
+      });
+      //setClasname("buttonhidden");
+    }
+  }
+
+
+
   const checkboxChangedHnadler = (e) => {
     if (e.target.checked) {
       console.log("chaecked");
@@ -237,7 +272,7 @@ const UserList = () => {
               <thead>
                 <tr>
                   <td>
-                    <input type="checkbox" />
+                    <input type="checkbox" onChange={headerCheckBoxHandler} />
                   </td>
                   <th>#</th>
                   {state.formFields.map((field) => {
