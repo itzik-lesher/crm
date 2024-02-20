@@ -62,6 +62,7 @@
 				   }else{
 					  $file_name = '../public/users' . '.json';
 				   }
+               // Call the actuall function get_data() 
 				   if(file_put_contents("$file_name", get_data())) {
                   if ($_POST['name'] == 'sim'){
                      unlink('../public/users.json');
@@ -189,20 +190,34 @@
                 $form_fields_array = array_slice($first_array_keys, 2);
                 $url= $_SERVER['HTTP_HOST']; 
                 $url.= $_SERVER['REQUEST_URI'];   
-			    if (strpos($url, 'localhost') === false ){
-                     // save data files in build enviroment
-                     file_put_contents('../build/users.json', json_encode($data));
-                     // save form-fileld-file if not exists
-                     if (!file_exists('../public/FormFields.json')) {
-                        file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
-                     }
+			    if (strpos($url, 'localhost') === false ){                     
+                  // check if not all users wrere deleted
+                  if (count($form_fields_array) > 0){
+                     // save data files in local host
+                  file_put_contents('../build/users.json', json_encode($data));
+                  // save form-fileld-file if not exists
+                  if (!file_exists('../build/FormFields.json')) {
+                     file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
+                  }
+                  } else{
+                     // if all users deleted then dlete also users.json
+                     unlink('../build/users.json');
+                     unlink('../build/FormFields.json');
+                  }
 				 }else{ 
+               // check if not all users wrere deleted
+               if (count($form_fields_array) > 0){
                        // save data files in local host
                       file_put_contents('../public/users.json', json_encode($data));
                       // save form-fileld-file if not exists
                       if (!file_exists('../public/FormFields.json')) {
                         file_put_contents('../public/FormFields.json', json_encode($form_fields_array));
                       }
+                } else{
+                        // if all users deleted then dlete also users.json
+                        unlink('../public/users.json');
+                        unlink('../public/FormFields.json');
+                }
 				   }
 				
 				

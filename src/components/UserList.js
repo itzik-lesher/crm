@@ -130,10 +130,10 @@ const UserList = () => {
     // include the ID and name and first_line_exist of StudentsData.json
     totalUsers[0] = { form_name: state.crmName, ...totalUsers[0] };
     totalUsers[0] = { form_name_id: state.crmId, ...totalUsers[0] };
-    totalUsers[0] = {
-      first_line_existance: state.first_line_exist,
-      ...totalUsers[0],
-    };
+    //totalUsers[0] = {
+    //  first_line_existance: state.first_line_exist,
+    //  ...totalUsers[0],
+    //};
    
     fetch(api_url, {
       method: "POST",
