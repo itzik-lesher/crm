@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {
   Button,
   Alert,
@@ -12,11 +12,19 @@ import UserList from "./components/UserList";
 
 import "./App.css";
 import NavBar from "./UI/NavBar";
+import ModalLogin  from "./UI/ModalLogin";
 
 const App = () => {
+  const [modalLoginShow, setModaLoginShow] = useState(false);
   return (
     <>
+
       <NavBar />
+      <Button variant="primary" onClick={() => setModaLoginShow(true)}>
+        Launch modal with grid
+      </Button>
+
+      <ModalLogin show={modalLoginShow} onHide={() => setModaLoginShow(false)} />
       <UserList />;
     </>
   );
