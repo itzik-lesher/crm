@@ -15,16 +15,16 @@ import NavBar from "./UI/NavBar";
 import ModalLogin  from "./UI/ModalLogin";
 
 const App = () => {
-  const [modalLoginShow, setModaLoginShow] = useState(false);
+  const [unRegisteredUser, setUnRegisteredUser] = useState(false);
   return (
     <>
 
       <NavBar />
-      <Button variant="primary" onClick={() => setModaLoginShow(true)}>
+      <Button variant="primary" onClick={() => setUnRegisteredUser(true)}>
         Launch modal with grid
       </Button>
 
-      <ModalLogin show={modalLoginShow} onHide={() => setModaLoginShow(false)} />
+      <ModalLogin show={unRegisteredUser} onHide={() => setUnRegisteredUser(false)} />
       <UserList />;
     </>
   );

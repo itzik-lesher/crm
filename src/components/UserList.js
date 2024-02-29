@@ -134,7 +134,12 @@ const UserList = () => {
     //  first_line_existance: state.first_line_exist,
     //  ...totalUsers[0],
     //};
-   
+
+    // Add my own custom type in the body start to distinguish between 
+    // totalUsers, Registration Form, Login Form etc.
+    totalUsers = [{react_post_type: "USERS"}, ...totalUsers]
+    
+
     fetch(api_url, {
       method: "POST",
       headers: {
