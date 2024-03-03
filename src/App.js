@@ -38,7 +38,8 @@ const App = () => {
       <Button variant="primary" onClick={() => setRegisteredUser(false)}>
         Launch modal with grid
       </Button>
-      {!registeredUser ? <ModalLogin show={!registeredUser} registeredUserHandler={modifyRegisteredUserHandler} />: null}
+      {!registeredUser ? <ModalLogin show={!registeredUser} registeredUserHandler={modifyRegisteredUserHandler} 
+      setRegisteredUser={setRegisteredUser} />: null}
       {registeredUser? <UserList /> : null}
     </>
   );
