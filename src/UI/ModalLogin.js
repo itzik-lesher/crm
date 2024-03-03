@@ -38,7 +38,7 @@ function ModalLogin(props) {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={props.registeredUserHandler}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

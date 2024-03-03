@@ -15,17 +15,31 @@ import NavBar from "./UI/NavBar";
 import ModalLogin  from "./UI/ModalLogin";
 
 const App = () => {
-  const [unRegisteredUser, setUnRegisteredUser] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState(false);
+
+  useLayoutEffect(()=>{
+    let tokenString = localStorage.getItem('token');
+    if (tokenString && tokenString.length > 0){
+      setRegisteredUser(true);
+    }else{
+      setRegisteredUser(false)
+    }
+  },[])
+  
+  const modifyRegisteredUserHandler = () =>{
+    setRegisteredUser(true);
+  }
+
   return (
     <>
 
       <NavBar />
-      <Button variant="primary" onClick={() => setUnRegisteredUser(true)}>
+      
+      <Button variant="primary" onClick={() => setRegisteredUser(false)}>
         Launch modal with grid
       </Button>
-
-      <ModalLogin show={unRegisteredUser} onHide={() => setUnRegisteredUser(false)} />
-      <UserList />;
+      {!registeredUser ? <ModalLogin show={!registeredUser} registeredUserHandler={modifyRegisteredUserHandler} />: null}
+      {registeredUser? <UserList /> : null}
     </>
   );
 };
