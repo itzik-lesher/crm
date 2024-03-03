@@ -98,7 +98,7 @@
                   // $array_type = $data["0"]['react_post_type'];
 
                   ///!! if (!array_key_exists("0",$data)) {
-                  //if ($data["0"]['react_post_type'] == "ZZZZZ"){
+                  if ($data["0"]['react_post_type'] !== "USERS"){
                         if (array_key_first($data) === "ACCOUNT")
                         {
                            $url= $_SERVER['HTTP_HOST']; 
@@ -184,10 +184,8 @@
  
                         //echo $token;              
                        return; // get out here if its env.ini
-
-                  
                      } // if ($data["0"]['react_post_type'] !== "USERS"){
-                     if ($data["0"]['react_post_type'] !== "USERS"){
+                        
                      // arrive here if its "USERS": simple save after deleting some users
 
                      // first get reid of the the first object {react_post_type: "USERS"}
@@ -230,10 +228,10 @@
                   
                   
                   echo 'Data saved successfully!';	
-               }
+                  			   
 		   } // if sent from REACT (in all cases - both for regsiter account Modal and for deleting users lines        
   
-       // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+       } // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	   else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		       $url= $_SERVER['HTTP_HOST']; 
                $url.= $_SERVER['REQUEST_URI']; 
