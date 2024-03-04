@@ -185,7 +185,7 @@
                         //echo $token;              
                        return; // get out here if its env.ini
                      } // if ($data["0"]['react_post_type'] !== "USERS"){
-                        
+
                      // arrive here if its "USERS": simple save after deleting some users
 
                      // first get reid of the the first object {react_post_type: "USERS"}
@@ -224,11 +224,10 @@
                               unlink('../public/users.json');
                               unlink('../public/FormFields.json');
                      }
-                  }
+                     }
                   
                   
-                  echo 'Data saved successfully!';	
-                  			   
+                  echo 'Data saved successfully!';				   
 		   } // if sent from REACT (in all cases - both for regsiter account Modal and for deleting users lines        
   
        } // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
