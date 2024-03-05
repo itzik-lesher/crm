@@ -75,179 +75,200 @@
 				   }
 		   } //
          else{ // if sent from REACT (in all cases - both for regsiter account Modal and for deleting users lines          
-                $data = json_decode(file_get_contents('php://input'), true);
-                // first find who sent it:                
-                // 1. or a env.ini sent from AccountModal after user saving
-                // 2. is it a simple save after deleting some useres
-                //$first_array_keys=NULL;
-                //if (isset(array_keys($data[0]))){
-                //  $first_array_keys = array_keys($data[0]);
-                //}
-               //// $first_array_keys = array_keys($data[0]);
-               // its undefined for env.ini so !isset()
-               // for deleting lines we skip that and arrive their apropriatly
-               ///// if (!isset($first_array_keys)){
-               // the above code caused always an error
+            $data = json_decode(file_get_contents('php://input'), true);
+            // first find who sent it:                
+            // 1. or a env.ini sent from AccountModal after user saving
+            // 2. is it a simple save after deleting some useres
+            //$first_array_keys=NULL;
+            //if (isset(array_keys($data[0]))){
+            //  $first_array_keys = array_keys($data[0]);
+            //}
+           //// $first_array_keys = array_keys($data[0]);
+           // its undefined for env.ini so !isset()
+           // for deleting lines we skip that and arrive their apropriatly
+           ///// if (!isset($first_array_keys)){
+           // the above code caused always an error
 
-               // in case of env.ini or anr POST from REACT it must be 3
-               // in case of simple save users after deleting it must be more
-               // since includes form id, form name and at list fields of one user
-                  //$ss = array_key_first($data[0]);
-                  // if ((count($data) === 3)){                 
-                  // this works better even if left exactly 3 users
-                  // $array_type = $data["0"]['react_post_type'];
+           // in case of env.ini or anr POST from REACT it must be 3
+           // in case of simple save users after deleting it must be more
+           // since includes form id, form name and at list fields of one user
+              //$ss = array_key_first($data[0]);
+              // if ((count($data) === 3)){                 
+              // this works better even if left exactly 3 users
+              // $array_type = $data["0"]['react_post_type'];
 
-                  ///!! if (!array_key_exists("0",$data)) {
-                  if ($data["0"]['react_post_type'] !== "USERS"){
-                        if (array_key_first($data) === "ACCOUNT")
-                        {
-                           $url= $_SERVER['HTTP_HOST']; 
-                           $url.= $_SERVER['REQUEST_URI'];
-                           // remove the first item from array 
-                           array_shift($data);
-                           if (strpos($url, 'localhost') === false ){
-                              // save data files in build enviroment
-                              file_put_contents('../build/env.json', json_encode($data));
-                              // create token, save it and send it to client for future requests
-                        
-                           }else{ 
-                              // save data files in local host
-                              file_put_contents('../public/env.json', json_encode($data));
-                              // create token, save it and send it to client for future requests
-                           }
-                           // return token the fetch from ModalAccount.js 
-                        } //   if (array_key_first($data) === "ACCOUNT")      
-                        else if (array_key_first($data) === "LOGIN")
-                        {
-                           $url= $_SERVER['HTTP_HOST']; 
-                           $url.= $_SERVER['REQUEST_URI']; 
-                           // remove the first item from array 
-                           array_shift($data);
-                           if (strpos($url, 'localhost') === false ){
-                              // save data files in build enviroment
-                              //file_put_contents('../build/env.json', json_encode($data));
-                              $env_json = file_get_contents('../build/env.json');
-                              $env_array = json_decode($env_json, true); 
-                              if ($data === $env_array){
-                                 $token = uniqid();
-                                 // save token in server (same token for all users)
-                                 file_put_contents('../build/token.json', json_encode($token));
-                                 echo $token;
-                              } 
-                              else{
-                                 echo "bad";
-                              }
-                           }else{ 
-                              $env_json = file_get_contents('../public/env.json');
-                              $env_array = json_decode($env_json, true);
-                              // compare login to env
-                              if ($data === $env_array){
-                                 $token = uniqid();
-                                 // save token in server (same token for all users)
-                                 file_put_contents('../public/token.json', json_encode($token));
-                                 echo $token;
-                              } 
-                              else{
-                                 echo "bad";
-                              }
-                           }
-                           // return token the fetch from ModalAccount.js 
-                        }         
-                        else if (array_key_first($data) === "KEY1")
-                        {
-                           $url= $_SERVER['HTTP_HOST']; 
-                           $url.= $_SERVER['REQUEST_URI']; 
-                           // remove the first item from array 
-                           array_shift($data);
-                           // remove the second item
-                           array_shift($data);
-                           if (strpos($url, 'localhost') === false ){
-                             
-                              $env_json = file_get_contents('../build/env.json');
-                              $login_array = json_decode($env_json, true); 
-                        
-                           }else{ 
-                              $token_json = file_get_contents('../public/token.json');
-                              $token_array = json_decode($token_json, true);
-                              // compare login to env
-                              if ($data['TOKEN'] === $token_array){
-                               
-                                 echo "TOKEN-OK";
-                              } 
-                              else{
-                                 echo "bad";
-                              }
-                           }
-                           // return token the fetch from ModalAccount.js 
-                        }         
-  
- 
-                        //echo $token;              
-                       return; // get out here if its env.ini
-                     } // if ($data["0"]['react_post_type'] !== "USERS"){
+              ///!! if (!array_key_exists("0",$data)) {
+               if ($data["0"]['react_post_type'] === "LOGIN"){ 
+                  // first get reid of the the first object {react_post_type: "REGISTRATION"}
+                  $data = array_slice($data,1);
 
-                     // arrive here if its "USERS": simple save after deleting some users
-                     else if ($data["0"]['react_post_type'] === "USERS"){
-
-                     // first get reid of the the first object {react_post_type: "USERS"}
-                     $data = array_slice($data,1);
-                     // 2. is it a simple save after deleting some useres  
-                     $first_array_keys = array_keys($data[0]);
-                     // delete first 2 keys: form_id and form_name keys
-                     $form_fields_array = array_slice($first_array_keys, 2);
-                     $url= $_SERVER['HTTP_HOST']; 
-                     $url.= $_SERVER['REQUEST_URI'];   
-                  if (strpos($url, 'localhost') === false ){                     
-                        // check if not all users wrere deleted
-                        if (count($form_fields_array) > 0){
-                           // save data files in local host
-                        file_put_contents('../build/users.json', json_encode($data));
-                        // save form-fileld-file if not exists
-                        if (!file_exists('../build/FormFields.json')) {
-                           file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
-                        }
-                        } else{
-                           // if all users deleted then dlete also users.json
-                           unlink('../build/users.json');
-                           unlink('../build/FormFields.json');
-                        }
+                  $url= $_SERVER['HTTP_HOST']; 
+                  $url.= $_SERVER['REQUEST_URI']; 
+                  // remove the first item from array 
+                  ///array_shift($data);
+                  if (strpos($url, 'localhost') === false ){
+                     // save data files in build enviroment
+                     //file_put_contents('../build/env.json', json_encode($data));
+                     $env_json = file_get_contents('../build/env.json');
+                     $env_array = json_decode($env_json, true); 
+                     if ($data === $env_array){
+                        $token = uniqid();
+                        // save token in server (same token for all users)
+                        file_put_contents('../build/token.json', json_encode($token));
+                        echo $token;
+                     } 
+                     else{
+                        echo "bad";
+                     }
                   }else{ 
-                     // check if not all users wrere deleted
-                     if (count($form_fields_array) > 0){
-                           // save data files in local host
-                           file_put_contents('../public/users.json', json_encode($data));
-                           // save form-fileld-file if not exists
-                           if (!file_exists('../public/FormFields.json')) {
-                              file_put_contents('../public/FormFields.json', json_encode($form_fields_array));
-                           }
-                     } else{
-                              // if all users deleted then dlete also users.json
-                              unlink('../public/users.json');
-                              unlink('../public/FormFields.json');
+                     $env_json = file_get_contents('../public/.env');
+                     $env_array = json_decode($env_json, true);
+                     // compare login to env
+                     if (($data[0]['LOGIN'] === $env_array[0]['LOGIN']) &&
+                           ($data[1]['PASSWORD'] === $env_array[0]['PASSWORD']))
+                     {
+                        // check if there is a token in .env. If exits-> send to this user
+                        // if not => create, save in .env and also send to user
+
+                        if (strlen($env_array[0]['JWT_SECRET']) > 10){
+                           echo $env_array[0]['JWT_SECRET'];
+                           return;
+                        }
+                        else{
+                           $token = uniqid();
+                           // save token in server (same token for all users)
+                           $env_array[0]['JWT_SECRET'] = $token;
+                           file_put_contents('../public/token.json', json_encode($env_array));
+                           echo $$env_array[0]['JWT_SECRET'];
+                           return;
+                        }
+                        
+                        
+                     } 
+                     else{
+                        echo "bad";
                      }
-                     }
+                  }
+                  // return token the fetch from ModalAccount.js 
+
+               } // if ($data["0"]['react_post_type'] === "LOGIN"){
+               if ($data["0"]['react_post_type'] !== "USERS"){
+                    if (array_key_first($data) === "ACCOUNT")
+                    {
+                       $url= $_SERVER['HTTP_HOST']; 
+                       $url.= $_SERVER['REQUEST_URI'];
+                       // remove the first item from array 
+                       array_shift($data);
+                       if (strpos($url, 'localhost') === false ){
+                          // save data files in build enviroment
+                          file_put_contents('../build/env.json', json_encode($data));
+                          // create token, save it and send it to client for future requests
+                    
+                       }else{ 
+                          // save data files in local host
+                          file_put_contents('../public/env.json', json_encode($data));
+                          // create token, save it and send it to client for future requests
+                       }
+                       // return token the fetch from ModalAccount.js 
+                    } //   if (array_key_first($data) === "ACCOUNT")      
+                    else if (array_key_first($data) === "LOGIN")
+                    {
+                    }         
+                    else if (array_key_first($data) === "KEY1")
+                    {
+                       $url= $_SERVER['HTTP_HOST']; 
+                       $url.= $_SERVER['REQUEST_URI']; 
+                       // remove the first item from array 
+                       array_shift($data);
+                       // remove the second item
+                       array_shift($data);
+                       if (strpos($url, 'localhost') === false ){
+                         
+                          $env_json = file_get_contents('../build/env.json');
+                          $login_array = json_decode($env_json, true); 
+                    
+                       }else{ 
+                          $token_json = file_get_contents('../public/token.json');
+                          $token_array = json_decode($token_json, true);
+                          // compare login to env
+                          if ($data['TOKEN'] === $token_array){
+                           
+                             echo "TOKEN-OK";
+                          } 
+                          else{
+                             echo "bad";
+                          }
+                       }
+                       // return token the fetch from ModalAccount.js 
+                    }         
+
+
+                    //echo $token;              
+                   return; // get out here if its env.ini
+                 } // if ($data["0"]['react_post_type'] !== "USERS"){
                   
-                  
-                  echo 'Data saved successfully!';	
-                  } // if ($data["0"]['react_post_type'] === "USERS"){ 
-		   } // if sent from REACT (in all cases - both for regsiter account Modal and for deleting users lines        
-  
-       } // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	   else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-		       $url= $_SERVER['HTTP_HOST']; 
-               $url.= $_SERVER['REQUEST_URI']; 
-               // Add random hash to file name
-               //$rand_safix =  rand(101, 999); 
-               if (strpos($url, 'localhost') === false ){
-                 $file_name = '../build/env' . '.json';
-               }else{
-                  $file_name = '../public/env' . '.json';
-               }
-			   if(file_exists("$file_name")) { 
-				 echo "ENV.JSON-EXISTS";
-			   }
-			   else {
-				 echo "ENV.JSON-MISSING";  
-			   }
-	   }
-          
+                 // arrive here if its "USERS": simple save after deleting some users
+                 else if ($data["0"]['react_post_type'] === "USERS"){
+
+                 // first get reid of the the first object {react_post_type: "USERS"}
+                 $data = array_slice($data,1);
+                 // 2. is it a simple save after deleting some useres  
+                 $first_array_keys = array_keys($data[0]);
+                 // delete first 2 keys: form_id and form_name keys
+                 $form_fields_array = array_slice($first_array_keys, 2);
+                 $url= $_SERVER['HTTP_HOST']; 
+                 $url.= $_SERVER['REQUEST_URI'];   
+              if (strpos($url, 'localhost') === false ){                     
+                    // check if not all users wrere deleted
+                    if (count($form_fields_array) > 0){
+                       // save data files in local host
+                    file_put_contents('../build/users.json', json_encode($data));
+                    // save form-fileld-file if not exists
+                    if (!file_exists('../build/FormFields.json')) {
+                       file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
+                    }
+                    } else{
+                       // if all users deleted then dlete also users.json
+                       unlink('../build/users.json');
+                       unlink('../build/FormFields.json');
+                    }
+              }else{ 
+                 // check if not all users wrere deleted
+                 if (count($form_fields_array) > 0){
+                       // save data files in local host
+                       file_put_contents('../public/users.json', json_encode($data));
+                       // save form-fileld-file if not exists
+                       if (!file_exists('../public/FormFields.json')) {
+                          file_put_contents('../public/FormFields.json', json_encode($form_fields_array));
+                       }
+                 } else{
+                          // if all users deleted then dlete also users.json
+                          unlink('../public/users.json');
+                          unlink('../public/FormFields.json');
+                 }
+                 }
+              
+              
+              echo 'Data saved successfully!';	
+              } // if ($data["0"]['react_post_type'] === "USERS"){ 
+     } // if sent from REACT (in all cases - both for regsiter account Modal and for deleting users lines        
+
+   } // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+         $url= $_SERVER['HTTP_HOST']; 
+           $url.= $_SERVER['REQUEST_URI']; 
+           // Add random hash to file name
+           //$rand_safix =  rand(101, 999); 
+           if (strpos($url, 'localhost') === false ){
+             $file_name = '../build/env' . '.json';
+           }else{
+              $file_name = '../public/env' . '.json';
+           }
+        if(file_exists("$file_name")) { 
+         echo "ENV.JSON-EXISTS";
+        }
+        else {
+         echo "ENV.JSON-MISSING";  
+        }
+  }
+      
