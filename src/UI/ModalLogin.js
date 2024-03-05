@@ -14,17 +14,29 @@ function ModalLogin(props) {
     let tokenString = localStorage.getItem('token');
     if (tokenString && tokenString.length > 0){
       props.setRegisteredUser(true);
-      return;
+      ///////return;
     }else{
       props.setRegisteredUser(true)
     }
-    // if not register to get a token
-    fetch("api_url", {
+    // if token dosn't exit at all => register to get a token
+    let api_url = window.location.href;
+
+    if (api_url.indexOf("localhost") >= 0) {
+      // means localhost
+      ///api_url = "http://localhost/lp/lp-develop/api/api.php";
+      api_url = "http://localhost/lp/lp-develop/crm/api/api.php";
+    } else {
+      // production(the slice works like ../../../api.php)
+      //////api_url = api_url.slice(0, -17) + "/api/api.php";
+      //api_url = api_url.slice(0, -11) + "/api/api.php";
+      api_url = api_url.slice(0, -11) + "/crm/api/api.php";
+    }
+    fetch(api_url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([{react_post_type: "TOKENREQUEST"}]),  
+      body: JSON.stringify([{react_post_type: "LOGIN"},{LOGIN: userInputRef.current},{PASSWORD: passInputRef.current}]),  
     }) 
     .then((response) => {
      return response.text();
