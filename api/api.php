@@ -98,68 +98,6 @@
               // $array_type = $data["0"]['react_post_type'];
 
               ///!! if (!array_key_exists("0",$data)) {
-               if ($data["0"]['react_post_type'] === "ENV-STATUS"){ 
-                  // first get reid of the the first object {react_post_type: "REGISTRATION"}
-                  $data = array_slice($data,1);
-
-                  $url= $_SERVER['HTTP_HOST']; 
-                  $url.= $_SERVER['REQUEST_URI']; 
-                  // remove the first item from array 
-                  ///array_shift($data);
-                  if (strpos($url, 'localhost') === false ){
-                     // save data files in build enviroment
-                     //file_put_contents('../build/env.json', json_encode($data));
-                     $env_json = file_get_contents('../build/env.json');
-                     $env_array = json_decode($env_json, true); 
-                     if ($data === $env_array){
-                        $token = uniqid();
-                        // save token in server (same token for all users)
-                        file_put_contents('../build/token.json', json_encode($token));
-                        echo $token;
-                     } 
-                     else{
-                        echo "bad";
-                     }
-                  }else{ 
-                     $env_json = file_get_contents('../public/.env');
-                     if (!$env_json){
-                        // .env file doesnt exist
-                        echo '{["status":"missing"]}';
-                     }
-                     $env_array = json_decode($env_json, true);
-                     // compare login to env
-                     if ( strlen($env_array[0]['LOGIN'])  &&
-                           ($data[1]['PASSWORD'] === $env_array[0]['PASSWORD']))
-                     {
-                        // check if there is a token in .env. If exits-> send to this user
-                        // if not => create, save in .env and also send to user
-
-                        if (strlen($env_array[0]['JWT_SECRET']) > 10){
-                           echo $env_array[0]['JWT_SECRET'];
-                           return;
-                        }
-                        else{
-                           $token = uniqid();
-                           // save token in server (same token for all users)
-                           $env_array[0]['JWT_SECRET'] = $token;
-                           file_put_contents('../public/token.json', json_encode($env_array));
-                           echo $$env_array[0]['JWT_SECRET'];
-                           return;
-                        }
-                        
-                        
-                     } 
-                     else{
-                        $env_array[0]['JWT_SECRET'] = '123';
-                        echo $env_array[0]['JWT_SECRET'];
-                        return;
-                     }
-                  }
-                  // return token the fetch from ModalAccount.js 
-
-               } // if ($data["0"]['react_post_type'] === "ENV-STATUS"){   
-
-
                if ($data["0"]['react_post_type'] === "LOGIN"){ 
                   // first get reid of the the first object {react_post_type: "REGISTRATION"}
                   $data = array_slice($data,1);
