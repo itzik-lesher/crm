@@ -10,6 +10,7 @@ function ModalLogin(props) {
   const passInputRef = useRef();
 
   function closeModalAccountHandler() {
+    /*
     // first check if there is valid token
     let tokenString = localStorage.getItem('token');
     if (tokenString && tokenString.length > 0){
@@ -18,6 +19,7 @@ function ModalLogin(props) {
     }else{
       props.setRegisteredUser(true)
     }
+    */
     // if token dosn't exit at all => register to get a token
     let api_url = window.location.href;
 
@@ -39,11 +41,21 @@ function ModalLogin(props) {
       body: JSON.stringify([{react_post_type: "LOGIN"},{LOGIN: userInputRef.current},{PASSWORD: passInputRef.current}]),  
     }) 
     .then((response) => {
-     return response.text();
+     return response.json();
     })
     .then((message) => {
       console.log("message =" + message)
-      return message
+      if ((message.toString().length > 10) && (message.toString() !== "123")){
+      //if ((message.toString().length > 100)){
+          // probably its good => save in localstorage
+        localStorage.setItem('token',message);
+        // to enable closing login in App.js
+        props.setRegisteredUser(true)
+        return message
+      }
+      else{
+        alert('Credentials mistake. Please try again')
+      }
     })
     .catch((error) => console.error(error));
   }

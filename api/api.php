@@ -146,12 +146,15 @@
                         
                      } 
                      else{
-                        echo "bad";
+                        $env_array[0]['JWT_SECRET'] = '123';
+                        echo $env_array[0]['JWT_SECRET'];
+                        return;
                      }
                   }
                   // return token the fetch from ModalAccount.js 
 
                } // if ($data["0"]['react_post_type'] === "LOGIN"){
+                  
                if ($data["0"]['react_post_type'] !== "USERS"){
                     if (array_key_first($data) === "ACCOUNT")
                     {
