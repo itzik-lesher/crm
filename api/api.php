@@ -98,6 +98,48 @@
               // $array_type = $data["0"]['react_post_type'];
 
               ///!! if (!array_key_exists("0",$data)) {
+
+               if ($data["0"]['react_post_type'] === "ACCOUNT-EXISTS"){ 
+                  // first get reid of the the first object {react_post_type: "REGISTRATION"}
+                  $data = array_slice($data,1);
+
+                  $url= $_SERVER['HTTP_HOST']; 
+                  $url.= $_SERVER['REQUEST_URI']; 
+                  // remove the first item from array 
+                  ///array_shift($data);
+                  if (strpos($url, 'localhost') === false ){
+                     // save data files in build enviroment
+                     //file_put_contents('../build/env.json', json_encode($data));
+                     $env_json = file_get_contents('../build/env.json');
+                     $env_array = json_decode($env_json, true); 
+                     if ($data === $env_array){
+                        $token = uniqid();
+                        // save token in server (same token for all users)
+                        file_put_contents('../build/token.json', json_encode($token));
+                        echo $token;
+                     } 
+                     else{
+                        echo "bad";
+                     }
+                  }else{ 
+                     $env_json = file_get_contents('../public/.env');
+                     // check if aexists at all
+                     if (!$env_json){
+                        // dosent exist -> popup registration modal
+                        //echo "[{'ACCOUNT-STATUS':'MISSING-ENV'}]";
+
+                        echo 'ENV-MISSING';                      
+                        return; 
+                     }else if ($env_json){
+                        echo 'ENV-EXISTS';
+                     }
+                    
+                  }
+                  // return token the fetch from ModalAccount.js 
+
+               } // if ($data["0"]['react_post_type'] === "ACCOUNT-EXISTS"){
+              
+
                if ($data["0"]['react_post_type'] === "LOGIN"){ 
                   // first get reid of the the first object {react_post_type: "REGISTRATION"}
                   $data = array_slice($data,1);
@@ -147,7 +189,8 @@
                      } 
                      else{
                         $env_array[0]['JWT_SECRET'] = '123';
-                        echo $env_array[0]['JWT_SECRET'];
+                        //echo $env_array[0]['JWT_SECRET'];
+                        echo '123';
                         return;
                      }
                   }

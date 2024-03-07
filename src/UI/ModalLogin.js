@@ -22,10 +22,7 @@ function ModalLogin(props) {
     */
     // if token dosn't exit at all => register to get a token
     let api_url = window.location.href;
-
     if (api_url.indexOf("localhost") >= 0) {
-      // means localhost
-      ///api_url = "http://localhost/lp/lp-develop/api/api.php";
       api_url = "http://localhost/lp/lp-develop/crm/api/api.php";
     } else {
       // production(the slice works like ../../../api.php)
@@ -42,6 +39,7 @@ function ModalLogin(props) {
     }) 
     .then((response) => {
      return response.json();
+     //return response.text();
     })
     .then((message) => {
       console.log("message =" + message)
