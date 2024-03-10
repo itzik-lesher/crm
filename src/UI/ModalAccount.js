@@ -5,21 +5,12 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 
-function ModalLogin(props) {
+function ModalAccount(props) {
   const userInputRef = useRef();
   const passInputRef = useRef();
 
   function closeModalAccountHandler() {
-    /*
-    // first check if there is valid token
-    let tokenString = localStorage.getItem('token');
-    if (tokenString && tokenString.length > 0){
-      props.setLoginUser(true);
-      ///////return;
-    }else{
-      props.setLoginUser(true)
-    }
-    */
+    
     // if token dosn't exit at all => register to get a token
     let api_url = window.location.href;
     if (api_url.indexOf("localhost") >= 0) {
@@ -62,14 +53,14 @@ function ModalLogin(props) {
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-         Login
+         Dashboard
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="grid-example">
         <Container>
           <Row>
             <Col >
-            Password
+            Account
             </Col>   
           </Row>
           <Row>
@@ -100,4 +91,4 @@ function ModalLogin(props) {
   );
 }
 
-export default ModalLogin;
+export default ModalAccount;

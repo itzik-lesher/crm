@@ -12,21 +12,32 @@ import UserList from "./components/UserList";
 
 import "./App.css";
 import NavBar from "./UI/NavBar";
+
+//import ModalAccount from "./UI/ModalAccount";
 import ModalLogin  from "./UI/ModalLogin";
 
 const App = () => {
-  const [registeredUser, setRegisteredUser] = useState(false);
+  const [logedInUser, setLoginUser] = useState(false);
   const [accountExists, setAccountExists] =useState(false);
 
   useLayoutEffect(()=>{
     let tokenString = localStorage.getItem('token');
+    
     if (tokenString && tokenString.length > 0){
-      setRegisteredUser(true);
+      setLoginUser(true);
     }else{
-      setRegisteredUser(false)
+      setLoginUser(false)
     }
-
-    // check if there is an account
+    
+    let accountCheckPost =[];
+    accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken: tokenString}]
+    if (tokenString && tokenString.length > 0){
+      accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken: tokenString}]
+    }
+    else{
+      accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken:''}]
+    }
+    // check if there is an account in server
 
     let api_url = window.location.href;
     if (api_url.indexOf("localhost") >= 0) {
@@ -42,7 +53,7 @@ const App = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([{react_post_type: "ACCOUNT-EXISTS"}])  
+      body: JSON.stringify(accountCheckPost)  
     }) 
     .then((response) => response.text())
     .then((data) => {
@@ -59,10 +70,12 @@ const App = () => {
     })
     .catch((error) => console.error(error));
 
+
+
   },[])
   
   const modifyRegisteredUserHandler = () =>{
-    setRegisteredUser(true);
+    setLoginUser(true);
   }
 
   return (
@@ -70,12 +83,12 @@ const App = () => {
 
       <NavBar />
       
-      <Button variant="primary" onClick={() => setRegisteredUser(false)}>
+      <Button variant="primary" onClick={() => setLoginUser(false)}>
         Launch modal with grid
       </Button>
-      {!registeredUser ? <ModalLogin show={!registeredUser} registeredUserHandler={modifyRegisteredUserHandler} 
-      setRegisteredUser={setRegisteredUser} />: null}
-      {registeredUser? <UserList /> : null}
+      {!logedInUser ? <ModalLogin show={!logedInUser} registeredUserHandler={modifyRegisteredUserHandler} 
+      setLoginUser={setLoginUser} />: null}
+      {logedInUser? <UserList /> : null}
     </>
   );
 };
