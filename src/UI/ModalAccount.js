@@ -39,7 +39,7 @@ function ModalAccount(props) {
           // probably its good => save in localstorage
         localStorage.setItem('token',message);
         // to enable closing login in App.js
-        props.setLoginUser(true)
+        props.setAccountExists(true)
         return message
       }
       else{
@@ -53,7 +53,7 @@ function ModalAccount(props) {
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-         Dashboard
+         Account Registration
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="grid-example">

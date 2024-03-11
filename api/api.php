@@ -128,25 +128,27 @@
                      if (!$env_json){
                         // dosent exist -> popup registration modal
                         //echo "[{'ACCOUNT-STATUS':'MISSING-ENV'}]";
-
-                        echo 'ENV-MISSING';                      
+                        unlink('../public/.env');  
+                        echo 'REGISTRATION-MODAL';                        
                         return; 
                      }
                      else if ($env_json){
                         // CHECK IF TOKEN MATCH
                         $env_decode = json_decode($env_json, true);
-                        if (($data[0][client_token] === ($env_decode[0][JET_SECRET]) && 
-                        $env_decode[0][LOGIN].length>4) && ($env_decode[0][PASSWORD].length>4)) {
+                        $val = $env_decode[0][JWT_SECRET];
+                        $length = strlen($env_decode[0][JWT_SECRET]);
+                        if (($data[0][client_token] === ($env_decode[0][JWT_SECRET]) && 
+                        strlen($env_decode[0][LOGIN])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
-                        else if (($data[0][client_token] !== ($env_decode[0][JET_SECRET]) && 
-                        $env_decode[0][LOGIN].length>4) && ($env_decode[0][PASSWORD].length>4)) {
+                        else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
+                        strlen($env_decode[0][LOGIN])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
-                        else if (($env_decode[0][JET_SECRET].length<8) || 
-                        ($env_decode[0][LOGIN].length<4) || ($env_decode[0][PASSWORD].length<4)) {
+                        else if ((strlen($env_decode[0][JWT_SECRET])<8) || 
+                        strlen(($env_decode[0][LOGIN])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
                            // delete .env
                            unlink('../public/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -154,8 +156,9 @@
                         }
                     
                      }else{
-                           echo 'REGISTRATION-MODAL';
-                            return;
+                           unlink('../public/.env');  
+                           echo 'REGISTRATION-MODAL';                           
+                           return;
                      }
                   }
                   // return token the fetch from ModalAccount.js 

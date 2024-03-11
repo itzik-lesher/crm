@@ -15,6 +15,7 @@ import NavBar from "./UI/NavBar";
 
 //import ModalAccount from "./UI/ModalAccount";
 import ModalLogin  from "./UI/ModalLogin";
+import ModalAccount from "./UI/ModalAccount";
 
 const App = () => {
   const [logedInUser, setLoginUser] = useState(false);
@@ -58,14 +59,21 @@ const App = () => {
     .then((response) => response.text())
     .then((data) => {
       console.log("message =" + data)
-      if (data.indexOf('ENV-MISSING') > 0){
+      if (data.indexOf('REGISTRATION-MODAL') > 0){
       // missing .env file
         setAccountExists(false);
+        setLoginUser(false);
         return
       }
-      else if (data.indexOf('ENV-EXISTS') > 0){
+      else if (data.indexOf('LOGIN-MODAL') > 0){
         setAccountExists(true);
+        setLoginUser(false);
         return;
+      }
+      else if (data.indexOf('TOKEN-OK') > 0){
+        setAccountExists(true);
+        setLoginUser(true);
+        return
       }
     })
     .catch((error) => console.error(error));
@@ -74,10 +82,30 @@ const App = () => {
 
   },[])
   
-  const modifyRegisteredUserHandler = () =>{
+  const loginUserHandler = () =>{
     setLoginUser(true);
   }
 
+  const loginModalAccountHandler = () =>{
+    setAccountExists(true);
+  }
+/*
+   {!logedInUser ? <ModalLogin show={!logedInUser} loginUserHandler={loginUserHandler} 
+      setLoginUser={setLoginUser} />: null}
+      {logedInUser? <UserList /> : null}
+*/
+  let final_disply = null;
+  if ( accountExists && logedInUser) {
+    final_disply = <UserList />
+  }
+  else if ( accountExists && !logedInUser) {
+    final_disply = <ModalLogin show={!logedInUser} loginUserHandler={loginUserHandler} 
+    setLoginUser={setLoginUser} />
+  }
+  else if ( !accountExists) {
+    final_disply = <ModalAccount show={!logedInUser} loginModalAccountHandler={loginModalAccountHandler} 
+    setAccountExists={setAccountExists} />
+  }
   return (
     <>
 
@@ -86,9 +114,7 @@ const App = () => {
       <Button variant="primary" onClick={() => setLoginUser(false)}>
         Launch modal with grid
       </Button>
-      {!logedInUser ? <ModalLogin show={!logedInUser} registeredUserHandler={modifyRegisteredUserHandler} 
-      setLoginUser={setLoginUser} />: null}
-      {logedInUser? <UserList /> : null}
+      {final_disply}
     </>
   );
 };
