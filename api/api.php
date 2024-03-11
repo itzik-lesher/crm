@@ -99,7 +99,8 @@
 
               ///!! if (!array_key_exists("0",$data)) {
 
-               if ($data["0"]['react_post_type'] === "ACCOUNT-EXISTS"){ 
+               
+               if ($data["0"]['react_post_type'] === "ACCOUNT-TOKEN-CHECK"){ 
                   // first get reid of the the first object {react_post_type: "REGISTRATION"}
                   $data = array_slice($data,1);
 
@@ -130,14 +131,36 @@
 
                         echo 'ENV-MISSING';                      
                         return; 
-                     }else if ($env_json){
-                        echo 'ENV-EXISTS';
                      }
+                     else if ($env_json){
+                        // CHECK IF TOKEN MATCH
+                        $env_decode = json_decode($env_json, true);
+                        if (($data[0][client_token] === ($env_decode[0][JET_SECRET]) && 
+                        $env_decode[0][LOGIN].length>4) && ($env_decode[0][PASSWORD].length>4)) {
+                           echo 'TOKEN-OK';
+                           return;
+                        }
+                        else if (($data[0][client_token] !== ($env_decode[0][JET_SECRET]) && 
+                        $env_decode[0][LOGIN].length>4) && ($env_decode[0][PASSWORD].length>4)) {
+                           echo 'LOGIN-MODAL';
+                           return;
+                        }
+                        else if (($env_decode[0][JET_SECRET].length<8) || 
+                        ($env_decode[0][LOGIN].length<4) || ($env_decode[0][PASSWORD].length<4)) {
+                           // delete .env
+                           unlink('../public/.env');                          
+                           echo 'REGISTRATION-MODAL';
+                           return;
+                        }
                     
+                     }else{
+                           echo 'REGISTRATION-MODAL';
+                            return;
+                     }
                   }
                   // return token the fetch from ModalAccount.js 
 
-               } // if ($data["0"]['react_post_type'] === "ACCOUNT-EXISTS"){
+               } // if ($data["0"]['react_post_type'] === "ACCOUNT-TOKEN-CHECK"){
               
 
                if ($data["0"]['react_post_type'] === "LOGIN"){ 

@@ -29,13 +29,13 @@ const App = () => {
       setLoginUser(false)
     }
     
-    let accountCheckPost =[];
-    accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken: tokenString}]
+    let accountTokenCheckPost =[];
+    accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
     if (tokenString && tokenString.length > 0){
-      accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken: tokenString}]
+      accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
     }
     else{
-      accountCheckPost = [{react_post_type: "ACCOUNT-EXISTS"},{clientToken:''}]
+      accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken:''}]
     }
     // check if there is an account in server
 
@@ -53,7 +53,7 @@ const App = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(accountCheckPost)  
+      body: JSON.stringify(accountTokenCheckPost)  
     }) 
     .then((response) => response.text())
     .then((data) => {
