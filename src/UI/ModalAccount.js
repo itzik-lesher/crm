@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 
 function ModalAccount(props) {
   const userInputRef = useRef();
-  const passInputRef = useRef();
+  const passPassRef = useRef();
 
   function closeModalAccountHandler() {
     
@@ -26,7 +26,7 @@ function ModalAccount(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([{react_post_type: "LOGIN"},{LOGIN: userInputRef.current},{PASSWORD: passInputRef.current}]),  
+      body: JSON.stringify([{react_post_type: "REGISTRATION"},{JWT_SECRET:''},{USER: userInputRef},{PASSWORD: passPassRef}]),  
     }) 
     .then((response) => {
      return response.json();
@@ -78,8 +78,8 @@ function ModalAccount(props) {
           <Row>
             <Col xs={6} md={4}>
               <input type="text"
-              value={passInputRef.current}
-              onChange={(e) => (passInputRef.current = e.target.value)}/>
+              value={passPassRef.current}
+              onChange={(e) => (passPassRef.current = e.target.value)}/>
             </Col>
           </Row>
         </Container>

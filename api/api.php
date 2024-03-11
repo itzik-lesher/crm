@@ -164,7 +164,45 @@
                   // return token the fetch from ModalAccount.js 
 
                } // if ($data["0"]['react_post_type'] === "ACCOUNT-TOKEN-CHECK"){
-              
+
+                  if ($data["0"]['react_post_type'] === "REGISTRATION"){ 
+                     // first get reid of the the first object {react_post_type: "REGISTRATION"}
+                     $data = array_slice($data,1);
+   
+                     $url= $_SERVER['HTTP_HOST']; 
+                     $url.= $_SERVER['REQUEST_URI']; 
+                     // remove the first item from array 
+                     ///array_shift($data);
+                     if (strpos($url, 'localhost') === false ){
+                        // save data files in build enviroment
+                        //file_put_contents('../build/env.json', json_encode($data));
+                        $env_json = file_get_contents('../build/env.json');
+                        $env_array = json_decode($env_json, true); 
+                        if ($data === $env_array){
+                           $token = uniqid();
+                           // save token in server (same token for all users)
+                           file_put_contents('../build/token.json', json_encode($token));
+                           echo $token;
+                        } 
+                        else{
+                           echo "bad";
+                        }
+                     }else{ 
+                        $env_json = file_get_contents('../public/.env');
+                        $env_array = json_decode($env_json, true);
+                        // delete .env if exists
+                        unlink('../public/.env');
+                        // write down the registrtaion details in new .env
+                        $rand_safix =  rand(101, 999);
+                        $data[0][JWT_SECRET] = $rand_safix;
+                        file_put_contents('../public/.json', json_encode($data));
+                        
+                     }
+                     // return token the fetch from ModalAccount.js 
+   
+                  } //if ($data["0"]['react_post_type'] === "REGISTRATION"){ 
+                    
+
 
                if ($data["0"]['react_post_type'] === "LOGIN"){ 
                   // first get reid of the the first object {react_post_type: "REGISTRATION"}
@@ -282,7 +320,7 @@
                  // arrive here if its "USERS": simple save after deleting some users
                  else if ($data["0"]['react_post_type'] === "USERS"){
 
-                 // first get reid of the the first object {react_post_type: "USERS"}
+                 // first get rid of the the first object {react_post_type: "USERS"}
                  $data = array_slice($data,1);
                  // 2. is it a simple save after deleting some useres  
                  $first_array_keys = array_keys($data[0]);
