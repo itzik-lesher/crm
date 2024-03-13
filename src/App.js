@@ -24,15 +24,15 @@ const App = () => {
   useLayoutEffect(()=>{
     let tokenString = localStorage.getItem('token');
     
-    if (tokenString && tokenString.length > 0){
-      setLoginUser(true);
+    if (tokenString && tokenString.length > 9){
+      setLoginUser(false);
     }else{
-      setLoginUser(false)
+      setAccountExists(true)
     }
     
     let accountTokenCheckPost =[];
     accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
-    if (tokenString && tokenString.length > 0){
+    if (tokenString && tokenString.length > 9){
       accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
     }
     else{

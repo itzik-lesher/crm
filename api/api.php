@@ -138,17 +138,18 @@
                         $val = $env_decode[0][JWT_SECRET];
                         $length = strlen($env_decode[0][JWT_SECRET]);
                         if (($data[0][client_token] === ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][LOGIN])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
                         else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][LOGIN])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
+                        // Soemething bad with server token. Let user create new by REGIRATION MODAL
                         else if ((strlen($env_decode[0][JWT_SECRET])<8) || 
-                        strlen(($env_decode[0][LOGIN])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
+                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
                            // delete .env
                            unlink('../public/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -233,7 +234,7 @@
                      $env_json = file_get_contents('../public/.env');
                      $env_array = json_decode($env_json, true);
                      // compare login to env
-                     if (($data[0]['LOGIN'] === $env_array[1]['USER']['current']) &&
+                     if (($data[0]['USER'] === $env_array[1]['USER']['current']) &&
                            ($data[1]['PASSWORD'] === $env_array[2]['PASSWORD']['current']))
                      {
                         // check if there is a token in .env. If exits-> send to this user
