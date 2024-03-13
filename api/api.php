@@ -122,7 +122,7 @@
                      else{
                         echo "bad";
                      }
-                  }else{ 
+                  }else{ //public
                      $env_json = file_get_contents('../public/.env');
                      // check if aexists at all
                      if (!$env_json){
@@ -137,18 +137,20 @@
                         $env_decode = json_decode($env_json, true);
                         $val = $env_decode[0][JWT_SECRET];
                         $length = strlen($env_decode[0][JWT_SECRET]);
+                        // .env exists and token match
                         if (($data[0][client_token] === ($env_decode[0][JWT_SECRET]) && 
                         strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
+                        // // .env exists and token doent match
                         else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
                         strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
                         // Soemething bad with server token. Let user create new by REGIRATION MODAL
-                        else if ((strlen($env_decode[0][JWT_SECRET])<8) || 
+                        else if ((strlen($env_decode[0][JWT_SECRET])<9) || 
                         strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
                            // delete .env
                            unlink('../public/.env');                          
@@ -230,21 +232,21 @@
                      else{
                         echo "bad";
                      }
-                  }else{ 
+                  }else{ // public
                      $env_json = file_get_contents('../public/.env');
                      $env_array = json_decode($env_json, true);
                      // compare login to env
                      if (($data[0]['USER'] === $env_array[1]['USER']['current']) &&
                            ($data[1]['PASSWORD'] === $env_array[2]['PASSWORD']['current']))
                      {
-                        // check if there is a token in .env. If exits-> send to this user
-                        // if not => create, save in .env and also send to user
+                        // user/pass match
+                        // check if there is a valid token in .env. If exits-> send to this user                       
 
                         if (strlen($env_array[0]['JWT_SECRET']) > 9){
                            echo $env_array[0]['JWT_SECRET'];
                            return;
                         }
-                        else{
+                        else{// if not => create, save in .env and also send to user
                            $token = uniqid();
                            // save token in server (same token for all users)
                            $env_array[0]['JWT_SECRET'] = $token;

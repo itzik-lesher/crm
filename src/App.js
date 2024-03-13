@@ -1,4 +1,4 @@
-import React , {useState, useLayoutEffect} from "react";
+import React , {useState, useRef, useLayoutEffect} from "react";
 import {
   Button,
   Alert,
@@ -20,8 +20,16 @@ import ModalAccount from "./UI/ModalAccount";
 const App = () => {
   const [logedInUser, setLoginUser] = useState(false);
   const [accountExists, setAccountExists] =useState(false);
+  const useLayoutEffectCycle = useRef(0);
 
   useLayoutEffect(()=>{
+  // allow excution only first round
+  if (useLayoutEffectCycle.current > 0) {
+    return;
+  }
+    useLayoutEffectCycle.current++;
+    
+    
     let tokenString = localStorage.getItem('token');
     
     if (tokenString && tokenString.length > 9){
