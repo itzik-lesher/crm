@@ -29,15 +29,17 @@ function ModalAccount(props) {
       body: JSON.stringify([{react_post_type: "REGISTRATION"},{JWT_SECRET:''},{USER: userInputRef},{PASSWORD: passPassRef}]),  
     }) 
     .then((response) => {
-     return response.json();
-     //return response.text();
+     //return response.json();
+     return response.text();
     })
     .then((message) => {
       console.log("message =" + message)
-      if ((message.toString().length > 10) && (message.toString() !== "123")){
+      if ((message) && (message.toString().length > 9)){
       //if ((message.toString().length > 100)){
           // probably its good => save in localstorage
-        localStorage.setItem('token',message);
+        // since I use response.text() the token is the last 10 digits
+        let token = message.slice(-10);
+        localStorage.setItem('token',token);
         // to enable closing login in App.js
         props.setAccountExists(true)
         return message

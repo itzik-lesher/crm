@@ -9,7 +9,7 @@ function ModalLogin(props) {
   const userInputRef = useRef();
   const passInputRef = useRef();
 
-  function closeModalAccountHandler() {
+  function closeModalLoginHandler() {
     /*
     // first check if there is valid token
     let tokenString = localStorage.getItem('token');
@@ -38,17 +38,19 @@ function ModalLogin(props) {
       body: JSON.stringify([{react_post_type: "LOGIN"},{LOGIN: userInputRef.current},{PASSWORD: passInputRef.current}]),  
     }) 
     .then((response) => {
-     return response.json();
-     //return response.text();
+     //return response.json();
+     return response.text();
     })
     .then((message) => {
       console.log("message =" + message)
-      if ((message.toString().length > 10) && (message.toString() !== "123")){
+      if ((message.toString().length > 10) && message){
+      let server_token = message.slice(-10);
       //if ((message.toString().length > 100)){
           // probably its good => save in localstorage
-        localStorage.setItem('token',message);
+        if (localStorage.getItem('token') === server_token){
         // to enable closing login in App.js
         props.setLoginUser(true)
+        }
         return message
       }
       else{
@@ -94,7 +96,7 @@ function ModalLogin(props) {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={closeModalAccountHandler}>Close</Button>
+        <Button onClick={closeModalLoginHandler}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

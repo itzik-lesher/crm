@@ -100,11 +100,11 @@ const App = () => {
   }
   else if ( accountExists && !logedInUser) {
     final_disply = <ModalLogin show={!logedInUser} loginUserHandler={loginUserHandler} 
-    setLoginUser={setLoginUser} />
+    setLoginUser={setLoginUser} setAccountExists={setAccountExists} />
   }
   else if ( !accountExists) {
     final_disply = <ModalAccount show={!logedInUser} loginModalAccountHandler={loginModalAccountHandler} 
-    setAccountExists={setAccountExists} />
+    setAccountExists={setAccountExists} setLoginUser={setLoginUser}/>
   }
   return (
     <>

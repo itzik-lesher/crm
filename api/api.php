@@ -188,18 +188,21 @@
                            echo "bad";
                         }
                      }else{ 
-                        $env_json = file_get_contents('../public/.env');
-                        $env_array = json_decode($env_json, true);
+                        //$env_json = file_get_contents('../public/.env');
+                        //$env_array = json_decode($env_json, true);
                         // delete .env if exists
                         unlink('../public/.env');
                         // write down the registrtaion details in new .env
-                        $rand_safix =  rand(101, 999);
+                        $rand_safix =  (string)rand(1000000001, 9999999999);
                         $data[0][JWT_SECRET] = $rand_safix;
-                        file_put_contents('../public/.json', json_encode($data));
+                        file_put_contents('../public/.env', json_encode($data));
+                        // echo to react
+                        echo json_encode("token" + $rand_safix);
                         
                      }
-                     // return token the fetch from ModalAccount.js 
-   
+                     // return token the fetch from ModalAccount.js
+                     // get out  
+                     return;
                   } //if ($data["0"]['react_post_type'] === "REGISTRATION"){ 
                     
 
@@ -230,13 +233,13 @@
                      $env_json = file_get_contents('../public/.env');
                      $env_array = json_decode($env_json, true);
                      // compare login to env
-                     if (($data[0]['LOGIN'] === $env_array[0]['LOGIN']) &&
-                           ($data[1]['PASSWORD'] === $env_array[0]['PASSWORD']))
+                     if (($data[0]['LOGIN'] === $env_array[1]['USER']['current']) &&
+                           ($data[1]['PASSWORD'] === $env_array[2]['PASSWORD']['current']))
                      {
                         // check if there is a token in .env. If exits-> send to this user
                         // if not => create, save in .env and also send to user
 
-                        if (strlen($env_array[0]['JWT_SECRET']) > 10){
+                        if (strlen($env_array[0]['JWT_SECRET']) > 9){
                            echo $env_array[0]['JWT_SECRET'];
                            return;
                         }
