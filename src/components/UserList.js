@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import { UserService } from "../services/UserService";
 import { Container, Row, Col, Table } from "react-bootstrap";
+import * as XLSX from "xlsx";
 
 const UserList = () => {
   const [state, setState] = useState({
@@ -15,6 +16,7 @@ const UserList = () => {
   // holds the deleted lines as array. For instance if we check
   // checkboxes 2 and 4  deleteArraylist = [2, 4]
   const [deleteArraylist, setDeleteArrayList] = useState([]);
+  const [showDeleteRowButton, setShowDeleteRowButton] = useState(false);
   const useEffectSaveRef = useRef(true);
   // crmId: crm_id,
   // crmName: crm_name,
@@ -205,9 +207,18 @@ const UserList = () => {
         });
       });
     }
-
+    
     console.log("deleteArraylist = " + JSON.stringify(deleteArraylist));
   };
+
+  useEffect(()=>{
+    if (deleteArraylist.length > 0){
+      setShowDeleteRowButton(true);
+    }
+    else{
+      setShowDeleteRowButton(false);
+    }
+  },[deleteArraylist])
 
   const deleteCheckedUsersHandler = () => {
     // remove the data lines of deleted users
@@ -247,13 +258,28 @@ const UserList = () => {
     // activate useEffect 
     useEffectSaveRef.current = false;
   };
+/*
+  const export2ExcelHandler= () => {
+    console.log(state.users);
+  }
+  */
+
+  const export2ExcelHandler = () => {
+    
+      console.log(state.users);
+      var wb = XLSX.utils.book_new(),
+        ws = XLSX.utils.json_to_sheet(state.users);
+      XLSX.utils.book_append_sheet(wb, ws, "mySheet1");
+      XLSX.writeFile(wb, "MyExcel.xlsx");
+    
+  };
 
   return (
     <>
       User List
       {/*} <pre>{JSON.stringify(state.users)}</pre>
       <pre>{JSON.stringify(state.users,null,2)}</pre>*/}
-      <Container fluid className="mt-3">
+      <Container style={{direction: "rtl"}} fluid className="mt-3">
         <Row>
           <Col>
             <h3 className="text-primary">User List</h3>
@@ -265,12 +291,22 @@ const UserList = () => {
             <h3 className="text-primary"></h3>
             <div className="flex">
               <p className="fst-italic">{state.crmName}</p>
-              <button onClick={deleteCheckedUsersHandler}>
-                מחק שורות מסומנות
-              </button>
+              
             </div>
           </Col>
         </Row>
+        <Row>
+          <Col xs={6}>
+            <h3 className="text-primary"></h3>
+            <div  style={{flexDirection:"row",display:"flex"}}>                                                     
+              <p style={{cursor:"pointer",textDecoration: "underline"}}onClick={export2ExcelHandler}>  יצא לקובץ אקסל </p>
+              {/*{showDeleteRowButton ? <button onClick={deleteCheckedUsersHandler}>
+                מחק שורות מסומנות
+    </button>  : null} */}
+              {showDeleteRowButton ?<p style={{paddingRight:10,paddingLeft:10, color:'white',backgroundColor:"red",cursor:"pointer",textDecoration: "underline",marginRight:20}}onClick={deleteCheckedUsersHandler}>  מחק שורות מסומנות </p> : null} 
+            </div>           
+          </Col>
+        </Row>       
         <Row>
           <Col>
             <Table striped border hover className="shadow-lg text-center">
