@@ -35,7 +35,7 @@ function ModalLogin(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([{react_post_type: "LOGIN"},{LOGIN: userInputRef.current},{PASSWORD: passInputRef.current}]),  
+      body: JSON.stringify([{react_post_type: "LOGIN"},{USER: userInputRef.current},{PASSWORD: passInputRef.current}]),  
     }) 
     .then((response) => {
      //return response.json();

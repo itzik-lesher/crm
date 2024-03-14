@@ -138,12 +138,12 @@
                         $val = $env_decode[0][JWT_SECRET];
                         $length = strlen($env_decode[0][JWT_SECRET]);
                         // .env exists and token match
-                        if (($data[0][client_token] === ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                        if (($data[0][clientToken] === ($env_decode[0][JWT_SECRET])) && 
+                        (strlen($env_decode[1][USER][current])>4) && (strlen($env_decode[2][PASSWORD][current])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
-                        // // .env exists and token doent match
+                        // // .env exists and token doesnt match
                         else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
                         strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
                            echo 'LOGIN-MODAL';
