@@ -19,14 +19,18 @@ import ModalAccount from "./UI/ModalAccount";
 
 const App = () => {
   const [logedInUser, setLoginUser] = useState(false);
-  const [accountExists, setAccountExists] =useState(false);
-  const useLayoutEffectCycle = useRef(0);
+  const [accountExists, setAccountExists] = useState(false);
+  const [startupCheck, setStartupCheck] = useState(true);
+  const useLayoutEffectCycle = useRef(0); 
 
   useLayoutEffect(()=>{
+ 
   // allow excution only first round
   if (useLayoutEffectCycle.current > 0) {
     return;
   }
+  
+    setStartupCheck(true);
     useLayoutEffectCycle.current++;
     
     
@@ -71,22 +75,25 @@ const App = () => {
       // missing .env file
         setAccountExists(false);
         setLoginUser(false);
+        setStartupCheck(false);
         return
       }
       else if (data.indexOf('LOGIN-MODAL') > 0){
         setAccountExists(true);
         setLoginUser(false);
+        setStartupCheck(false);
         return;
       }
       else if (data.indexOf('TOKEN-OK') > 0){
         setAccountExists(true);
         setLoginUser(true);
+        setStartupCheck(false);
         return
       }
     })
     .catch((error) => console.error(error));
 
-
+    
 
   },[])
   
@@ -103,15 +110,15 @@ const App = () => {
       {logedInUser? <UserList /> : null}
 */
   let final_disply = null;
-  if ( accountExists && logedInUser) {
+  if ( accountExists && logedInUser && !startupCheck) {
     final_disply = <UserList />
   }
-  else if ( accountExists && !logedInUser) {
+  else if ( accountExists && !logedInUser && !startupCheck) {
     final_disply = <ModalLogin show={!logedInUser} loginUserHandler={loginUserHandler} 
     setLoginUser={setLoginUser} setAccountExists={setAccountExists} />
   }
-  else if ( !accountExists) {
-    final_disply = <ModalAccount show={!logedInUser} loginModalAccountHandler={loginModalAccountHandler} 
+  else if ( !accountExists && !startupCheck) {
+    final_disply = <ModalAccount show={!logedInUser && (!startupCheck) } loginModalAccountHandler={loginModalAccountHandler} 
     setAccountExists={setAccountExists} setLoginUser={setLoginUser}/>
   }
   return (
