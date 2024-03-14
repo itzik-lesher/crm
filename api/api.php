@@ -64,10 +64,12 @@
 				   }
                // Call the actuall function get_data() 
 				   if(file_put_contents("$file_name", get_data())) {
+                  /* 14-3
                   if ($_POST['name'] == 'sim'){
                      unlink('../public/users.json');
                      copy('../public/usersSimulate.json','../public/users.json');
                   }
+                  */
 					   echo 'success';
 				   }                
 				   else {
@@ -109,20 +111,46 @@
                   // remove the first item from array 
                   ///array_shift($data);
                   if (strpos($url, 'localhost') === false ){
-                     // save data files in build enviroment
-                     //file_put_contents('../build/env.json', json_encode($data));
-                     $env_json = file_get_contents('../build/env.json');
-                     $env_array = json_decode($env_json, true); 
-                     if ($data === $env_array){
-                        $token = uniqid();
-                        // save token in server (same token for all users)
-                        file_put_contents('../build/token.json', json_encode($token));
-                        echo $token;
-                     } 
-                     else{
-                        echo "bad";
+                     $env_json = file_get_contents('../build/.env');
+                     // check if aexists at all
+                     if (!$env_json){
+                        // dosent exist -> popup registration modal
+                        //echo "[{'ACCOUNT-STATUS':'MISSING-ENV'}]";
+                        unlink('../build/.env');  
+                        echo 'REGISTRATION-MODAL';                        
+                        return; 
                      }
-                  }else{ //public
+                     else if ($env_json){
+                        // CHECK IF TOKEN MATCH
+                        $env_decode = json_decode($env_json, true);
+                        $val = $env_decode[0][JWT_SECRET];
+                        $length = strlen($env_decode[0][JWT_SECRET]);
+                        // .env exists and token match
+                        if (($data[0][clientToken] === ($env_decode[0][JWT_SECRET])) && 
+                        (strlen($env_decode[1][USER][current])>4) && (strlen($env_decode[2][PASSWORD][current])>4)) {
+                           echo 'TOKEN-OK';
+                           return;
+                        }
+                        // // .env exists and token doesnt match
+                        else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
+                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                           echo 'LOGIN-MODAL';
+                           return;
+                        }
+                        // Soemething bad with server token. Let user create new by REGIRATION MODAL
+                        else if ((strlen($env_decode[0][JWT_SECRET])<9) || 
+                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
+                           // delete .env
+                           unlink('../build/.env');                          
+                           echo 'REGISTRATION-MODAL';
+                           return;
+                        }
+                    
+                     }else{
+                           unlink('../public/.env');  
+                           echo 'REGISTRATION-MODAL';                           
+                           return;
+                     }                  }else{ //public
                      $env_json = file_get_contents('../public/.env');
                      // check if aexists at all
                      if (!$env_json){
@@ -177,19 +205,17 @@
                      // remove the first item from array 
                      ///array_shift($data);
                      if (strpos($url, 'localhost') === false ){
-                        // save data files in build enviroment
-                        //file_put_contents('../build/env.json', json_encode($data));
-                        $env_json = file_get_contents('../build/env.json');
-                        $env_array = json_decode($env_json, true); 
-                        if ($data === $env_array){
-                           $token = uniqid();
-                           // save token in server (same token for all users)
-                           file_put_contents('../build/token.json', json_encode($token));
-                           echo $token;
-                        } 
-                        else{
-                           echo "bad";
-                        }
+                         //$env_json = file_get_contents('../public/.env');
+                        //$env_array = json_decode($env_json, true);
+                        // delete .env if exists
+                        unlink('../build/.env');
+                        // write down the registrtaion details in new .env
+                        $rand_safix =  (string)rand(1000000001, 9999999999);
+                        $data[0][JWT_SECRET] = $rand_safix;
+                        file_put_contents('../build/.env', json_encode($data));
+                        // echo to react
+                        echo json_encode("token" + $rand_safix);
+                        
                      }else{ 
                         //$env_json = file_get_contents('../public/.env');
                         //$env_array = json_decode($env_json, true);
@@ -219,18 +245,35 @@
                   // remove the first item from array 
                   ///array_shift($data);
                   if (strpos($url, 'localhost') === false ){
-                     // save data files in build enviroment
-                     //file_put_contents('../build/env.json', json_encode($data));
-                     $env_json = file_get_contents('../build/env.json');
-                     $env_array = json_decode($env_json, true); 
-                     if ($data === $env_array){
-                        $token = uniqid();
-                        // save token in server (same token for all users)
-                        file_put_contents('../build/token.json', json_encode($token));
-                        echo $token;
+                     $env_json = file_get_contents('../build/.env');
+                     $env_array = json_decode($env_json, true);
+                     // compare login to env
+                     if (($data[0]['USER'] === $env_array[1]['USER']['current']) &&
+                           ($data[1]['PASSWORD'] === $env_array[2]['PASSWORD']['current']))
+                     {
+                        // user/pass match
+                        // check if there is a valid token in .env. If exits-> send to this user                       
+
+                        if (strlen($env_array[0]['JWT_SECRET']) > 9){
+                           echo $env_array[0]['JWT_SECRET'];
+                           return;
+                        }
+                        else{// if not => create, save in .env and also send to user
+                           $token = uniqid();
+                           // save token in server (same token for all users)
+                           $env_array[0]['JWT_SECRET'] = $token;
+                           file_put_contents('../build/token.json', json_encode($env_array));
+                           echo $$env_array[0]['JWT_SECRET'];
+                           return;
+                        }
+                        
+                        
                      } 
                      else{
-                        echo "bad";
+                        $env_array[0]['JWT_SECRET'] = '123';
+                        //echo $env_array[0]['JWT_SECRET'];
+                        echo '123';
+                        return;
                      }
                   }else{ // public
                      $env_json = file_get_contents('../public/.env');
@@ -335,20 +378,20 @@
                  $url= $_SERVER['HTTP_HOST']; 
                  $url.= $_SERVER['REQUEST_URI'];   
               if (strpos($url, 'localhost') === false ){                     
-                    // check if not all users wrere deleted
-                    if (count($form_fields_array) > 0){
-                       // save data files in local host
-                    file_put_contents('../build/users.json', json_encode($data));
-                    // save form-fileld-file if not exists
-                    if (!file_exists('../build/FormFields.json')) {
-                       file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
-                    }
-                    } else{
-                       // if all users deleted then dlete also users.json
-                       unlink('../build/users.json');
-                       unlink('../build/FormFields.json');
-                    }
-              }else{ 
+                 // check if not all users wrere deleted
+                 if (count($form_fields_array) > 0){
+                  // save data files in local host
+                  file_put_contents('../buid/users.json', json_encode($data));
+                  // save form-fileld-file if not exists
+                  if (!file_exists('../build/FormFields.json')) {
+                     file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
+                  }
+            } else{
+                     // if all users deleted then dlete also users.json
+                     unlink('../build/users.json');
+                     unlink('../build/FormFields.json');
+            }
+         }else{ 
                  // check if not all users wrere deleted
                  if (count($form_fields_array) > 0){
                        // save data files in local host

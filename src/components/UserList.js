@@ -276,14 +276,14 @@ const UserList = () => {
 
   return (
     <>
-      User List
+      
       {/*} <pre>{JSON.stringify(state.users)}</pre>
       <pre>{JSON.stringify(state.users,null,2)}</pre>*/}
       <Container style={{direction: "rtl"}} fluid className="mt-3">
         <Row>
           <Col>
-            <h3 className="text-primary">User List</h3>
-            <p className="fst-italic">oioioi</p>
+            {/*<h3 className="text-primary">User List</h3>
+            <p className="fst-italic">oioioi</p>*/}
           </Col>
         </Row>
         <Row>
