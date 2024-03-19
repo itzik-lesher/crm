@@ -123,23 +123,23 @@
                      else if ($env_json){
                         // CHECK IF TOKEN MATCH
                         $env_decode = json_decode($env_json, true);
-                        $val = $env_decode[0][JWT_SECRET];
-                        $length = strlen($env_decode[0][JWT_SECRET]);
+                        $val = $env_decode[0]['JWT_SECRET'];
+                        $length = strlen($env_decode[0]['JWT_SECRET']);
                         // .env exists and token match
-                        if (($data[0][clientToken] === ($env_decode[0][JWT_SECRET])) && 
-                        (strlen($env_decode[1][USER][current])>4) && (strlen($env_decode[2][PASSWORD][current])>4)) {
+                        if (($data[0]['clientToken'] === ($env_decode[0][JWT_SECRET])) && 
+                        (strlen($env_decode[1][USER]['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
                         // // .env exists and token doesnt match
                         else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0]['PASSWORD'])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
                         // Soemething bad with server token. Let user create new by REGIRATION MODAL
                         else if ((strlen($env_decode[0][JWT_SECRET])<9) || 
-                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
+                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0]['PASSWORD'])<4)) {
                            // delete .env
                            unlink('../build/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -163,23 +163,23 @@
                      else if ($env_json){
                         // CHECK IF TOKEN MATCH
                         $env_decode = json_decode($env_json, true);
-                        $val = $env_decode[0][JWT_SECRET];
-                        $length = strlen($env_decode[0][JWT_SECRET]);
+                        $val = $env_decode[0]['JWT_SECRET'];
+                        $length = strlen($env_decode[0]['JWT_SECRET']);
                         // .env exists and token match
-                        if (($data[0][clientToken] === ($env_decode[0][JWT_SECRET])) && 
-                        (strlen($env_decode[1][USER][current])>4) && (strlen($env_decode[2][PASSWORD][current])>4)) {
+                        if (($data[0]['clientToken'] === ($env_decode[0]['JWT_SECRET'])) && 
+                        (strlen($env_decode[1]['USER']['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
                         // // .env exists and token doesnt match
-                        else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0][PASSWORD])>4)) {
+                        else if (($data[0][client_token] !== ($env_decode[0]['JWT_SECRET']) && 
+                        strlen($env_decode[0]['USER'])>4) && strlen(($env_decode[0]['PASSWORD'])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
                         // Soemething bad with server token. Let user create new by REGIRATION MODAL
-                        else if ((strlen($env_decode[0][JWT_SECRET])<9) || 
-                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0][PASSWORD])<4)) {
+                        else if ((strlen($env_decode[0]['JWT_SECRET'])<9) || 
+                        strlen(($env_decode[0]['USER'])<4) || strlen(($env_decode[0]['PASSWORD'])<4)) {
                            // delete .env
                            unlink('../public/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -211,7 +211,7 @@
                         unlink('../build/.env');
                         // write down the registrtaion details in new .env
                         $rand_safix =  (string)rand(1000000001, 9999999999);
-                        $data[0][JWT_SECRET] = $rand_safix;
+                        $data[0]['JWT_SECRET'] = $rand_safix;
                         file_put_contents('../build/.env', json_encode($data));
                         // echo to react
                         echo json_encode("token" + $rand_safix);
@@ -223,7 +223,7 @@
                         unlink('../public/.env');
                         // write down the registrtaion details in new .env
                         $rand_safix =  (string)rand(1000000001, 9999999999);
-                        $data[0][JWT_SECRET] = $rand_safix;
+                        $data[0]['JWT_SECRET'] = $rand_safix;
                         file_put_contents('../public/.env', json_encode($data));
                         // echo to react
                         echo json_encode("token" + $rand_safix);
