@@ -15,7 +15,7 @@ import NavBar from "./UI/NavBar";
 
 //import ModalAccount from "./UI/ModalAccount";
 import ModalLogin  from "./UI/ModalLogin";
-import ModalAccount from "./UI/ModalAccount";
+import ModalAccount2 from "./UI/ModalAccount2";
 
 const App = () => {
   const [logedInUser, setLoginUser] = useState(false);
@@ -118,7 +118,7 @@ const App = () => {
     setLoginUser={setLoginUser} setAccountExists={setAccountExists} />
   }
   else if ( !accountExists && !startupCheck) {
-    final_disply = <ModalAccount show={!logedInUser && (!startupCheck) } loginModalAccountHandler={loginModalAccountHandler} 
+    final_disply = <ModalAccount2 show={!logedInUser && (!startupCheck) } loginModalAccountHandler={loginModalAccountHandler} 
     setAccountExists={setAccountExists} setLoginUser={setLoginUser}/>
   }
   return (
