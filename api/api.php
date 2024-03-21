@@ -127,19 +127,19 @@
                         $length = strlen($env_decode[0]['JWT_SECRET']);
                         // .env exists and token match
                         if (($data[0]['clientToken'] === ($env_decode[0][JWT_SECRET])) && 
-                        (strlen($env_decode[1][USER]['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
+                        (strlen($env_decode[1]['USER']['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
                         // // .env exists and token doesnt match
                         else if (($data[0][client_token] !== ($env_decode[0][JWT_SECRET]) && 
-                        strlen($env_decode[0][USER])>4) && strlen(($env_decode[0]['PASSWORD'])>4)) {
+                        strlen($env_decode[1]['USER'])>4) && strlen(($env_decode[2]['PASSWORD'])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
                         // Soemething bad with server token. Let user create new by REGIRATION MODAL
                         else if ((strlen($env_decode[0][JWT_SECRET])<9) || 
-                        strlen(($env_decode[0][USER])<4) || strlen(($env_decode[0]['PASSWORD'])<4)) {
+                        strlen(($env_decode[1]['USER'])<4) || strlen(($env_decode[2]['PASSWORD'])<4)) {
                            // delete .env
                            unlink('../build/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -172,14 +172,14 @@
                            return;
                         }
                         // // .env exists and token doesnt match
-                        else if (($data[0][client_token] !== ($env_decode[0]['JWT_SECRET']) && 
-                        strlen($env_decode[0]['USER'])>4) && strlen(($env_decode[0]['PASSWORD'])>4)) {
+                        else if (($data[0][client_token]) !== ($env_decode[0]['JWT_SECRET']) && 
+                        (strlen($env_decode[1]['USER']['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
                         }
                         // Soemething bad with server token. Let user create new by REGIRATION MODAL
                         else if ((strlen($env_decode[0]['JWT_SECRET'])<9) || 
-                        strlen(($env_decode[0]['USER'])<4) || strlen(($env_decode[0]['PASSWORD'])<4)) {
+                        strlen(($env_decode[1]['USER']['current'])<4) || strlen(($env_decode[2]['PASSWORD']['current'])<4)) {
                            // delete .env
                            unlink('../public/.env');                          
                            echo 'REGISTRATION-MODAL';
@@ -273,12 +273,14 @@
                         
                      } 
                      else{
-                        $env_array[0]['JWT_SECRET'] = '123';
+                        // 21-3 should not spoile server token
+                        // just disallow login 
+                        /// $env_array[0]['JWT_SECRET'] = '123';
                         //echo $env_array[0]['JWT_SECRET'];
                         echo '123';
                         return;
                      }
-                  }else{ // public
+                  }else{ // "LOGIN" - public
                      $env_json = file_get_contents('../public/.env');
                      $env_array = json_decode($env_json, true);
                      // compare login to env
@@ -292,7 +294,7 @@
                            echo $env_array[0]['JWT_SECRET'];
                            return;
                         }
-                        else{// if not => create, save in .env and also send to user
+                        else{// (shouldnt ever arrive here. if not => create, save in .env and also send to user
                            $token = uniqid();
                            // save token in server (same token for all users)
                            $env_array[0]['JWT_SECRET'] = $token;
@@ -304,7 +306,9 @@
                         
                      } 
                      else{
-                        $env_array[0]['JWT_SECRET'] = '123';
+                        // 21-3 should not spoile server token
+                        // just disallow login 
+                        /// $env_array[0]['JWT_SECRET'] = '123';
                         //echo $env_array[0]['JWT_SECRET'];
                         echo '123';
                         return;
