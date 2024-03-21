@@ -56,35 +56,37 @@ function ModalAccount2(props) {
         <Modal.Header closeButton>
           <Modal.Title className="account-title">יצירת חשבון</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className="input-filed">
-            <div className="labels">
-              <p className="textLarge">LOGIN</p>
-              <p className="text-small">(לפחות 3 תווים)</p>
-            </div>
-            <input
-              type="text"
+      <Modal.Body className="grid-example">
+        <Container>
+          <Row>
+            <Col >
+            Account
+            </Col>   
+          </Row>
+          <Row>
+            <Col xs={6} md={4}>
+              <input type="text"
               value={userInputRef.current}
-              onChange={(e) => (userInputRef.current = e.target.value)}
-            />
-          </div>
-          <div className="input-filed">
-            <div className="labels second">
-              <p className="textLarge">LOGIN</p>
-              <p className="text-small">(לפחות 3 תווים)</p>
-            </div>
-            <input
-              type="text"
+              onChange={(e) => (userInputRef.current = e.target.value)}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col >
+            User Name
+            </Col>   
+          </Row>
+          <Row>
+            <Col xs={6} md={4}>
+              <input type="text"
               value={passPassRef.current}
-              onChange={(e) => (passPassRef.current = e.target.value)}
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="warning" onClick={closeModalAccountHandler}>
-            צור חשבון
-          </Button>
-        </Modal.Footer>
+              onChange={(e) => (passPassRef.current = e.target.value)}/>
+            </Col>
+          </Row>
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={closeModalAccountHandler}>Close</Button>
+      </Modal.Footer>
     </Modal>
   );
 }
