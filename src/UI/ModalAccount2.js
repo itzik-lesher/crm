@@ -38,10 +38,15 @@ function ModalAccount2(props) {
       //if ((message.toString().length > 100)){
           // probably its good => save in localstorage
         // since I use response.text() the token is the last 10 digits
-        let token = message.slice(-10);
-        localStorage.setItem('token',token);
+
+        // 21-3 Don't accept and save locally token in registration - only in login
+        // let token = message.slice(-10);       
+        // localStorage.setItem('token',token);
+
         // to enable closing login in App.js
-        props.setAccountExists(true)
+        if (message.indexOf('creadential and token saved') > 0){
+            props.setAccountExists(true)
+        }
         return message
       }
       else{

@@ -214,7 +214,9 @@
                         $data[0]['JWT_SECRET'] = $rand_safix;
                         file_put_contents('../build/.env', json_encode($data));
                         // echo to react
-                        echo json_encode("token" + $rand_safix);
+                        // 21-3 Don't send token in registration - only in login
+                        //echo json_encode("token" + $rand_safix);
+                        echo json_encode("creadential and token saved");
                         
                      }else{ 
                         //$env_json = file_get_contents('../public/.env');
@@ -226,8 +228,9 @@
                         $data[0]['JWT_SECRET'] = $rand_safix;
                         file_put_contents('../public/.env', json_encode($data));
                         // echo to react
-                        echo json_encode("token" + $rand_safix);
-                        
+                        // 21-3 Don't send token in registration - only in login
+                        //echo json_encode("token" + $rand_safix);
+                        echo json_encode("creadential and token saved");
                      }
                      // return token the fetch from ModalAccount.js
                      // get out  
