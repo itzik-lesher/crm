@@ -377,11 +377,11 @@
                  $form_fields_array = array_slice($first_array_keys, 2);
                  $url= $_SERVER['HTTP_HOST']; 
                  $url.= $_SERVER['REQUEST_URI'];   
-              if (strpos($url, 'localhost') === false ){                     
+         if (strpos($url, 'localhost') === false ){                     
                  // check if not all users wrere deleted
                  if (count($form_fields_array) > 0){
                   // save data files in local host
-                  file_put_contents('../buid/users.json', json_encode($data));
+                  file_put_contents('../build/users.json', json_encode($data));
                   // save form-fileld-file if not exists
                   if (!file_exists('../build/FormFields.json')) {
                      file_put_contents('../build/FormFields.json', json_encode($form_fields_array));
