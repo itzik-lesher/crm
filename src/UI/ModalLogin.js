@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 
-function ModalLoginNew(props) {
+function ModalLogin(props) {
   const userInputRef = useRef();
   const passInputRef = useRef();
 
@@ -106,4 +106,4 @@ function ModalLoginNew(props) {
   );
 }
 
-export default ModalLoginNew;
+export default ModalLogin;

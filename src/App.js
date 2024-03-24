@@ -14,7 +14,7 @@ import "./App.css";
 import NavBar from "./UI/NavBar";
 
 //import ModalAccount from "./UI/ModalAccount";
-import ModalLoginNewNewNewNewNewNewNew  from "./UI/ModalLogin";
+import ModalLogin  from "./UI/ModalLogin";
 import ModalAccount from "./UI/ModalAccount";
 
 const App = () => {
@@ -114,7 +114,7 @@ const App = () => {
     final_disply = <UserList />
   }
   else if ( accountExists && !logedInUser && !startupCheck) {
-    final_disply = <ModalLoginNew show={!logedInUser} loginUserHandler={loginUserHandler} 
+    final_disply = <ModalLogin show={!logedInUser} loginUserHandler={loginUserHandler} 
     setLoginUser={setLoginUser} setAccountExists={setAccountExists} />
   }
   else if ( !accountExists && !startupCheck) {
