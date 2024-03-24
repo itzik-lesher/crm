@@ -43,15 +43,19 @@ function ModalLogin(props) {
     })
     .then((message) => {
       console.log("message =" + message)
-      if ((message.toString().length > 10) && message){
+      if ((message.toString().length > 9) && message){
       let server_token = message.slice(-10);
       //if ((message.toString().length > 100)){
           // probably its good => save in localstorage
-        if (localStorage.getItem('token') === server_token){
+        //if (localStorage.getItem('token') === server_token){
+        // to enable closing login in App.js
+
+        localStorage.setItem('token',server_token);
         // to enable closing login in App.js
         props.setLoginUser(true)
-        }
         return message
+        //}
+
       }
       else{
         alert('Credentials mistake. Please try again')

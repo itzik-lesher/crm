@@ -36,15 +36,15 @@ const App = () => {
     
     let tokenString = localStorage.getItem('token');
     
-    if (tokenString && tokenString.length > 9){
-      setLoginUser(false);
-    }else{
+    if (tokenString && tokenString.length > 8){
       setAccountExists(true)
+    }else{
+      setLoginUser(false);
     }
     
     let accountTokenCheckPost =[];
     accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
-    if (tokenString && tokenString.length > 9){
+    if (tokenString && tokenString.length > 8){
       accountTokenCheckPost = [{react_post_type: "ACCOUNT-TOKEN-CHECK"},{clientToken: tokenString}]
     }
     else{

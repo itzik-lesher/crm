@@ -150,7 +150,8 @@
                            unlink('../public/.env');  
                            echo 'REGISTRATION-MODAL';                           
                            return;
-                     }                  }else{ //public
+                     }                  
+                  }else{ //public
                      $env_json = file_get_contents('../public/.env');
                      // check if aexists at all
                      if (!$env_json){
@@ -166,13 +167,13 @@
                         $val = $env_decode[0]['JWT_SECRET'];
                         $length = strlen($env_decode[0]['JWT_SECRET']);
                         // .env exists and token match
-                        if (($data[0]['clientToken'] === ($env_decode[0]['JWT_SECRET'])) && 
+                        if (($data[0]['clientToken'] === $env_decode[0]['JWT_SECRET'] ) && 
                         (strlen($env_decode[1]['USER']['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'TOKEN-OK';
                            return;
                         }
                         // // .env exists and token doesnt match
-                        else if (($data[0][client_token]) !== ($env_decode[0]['JWT_SECRET']) && 
+                        else if (($data[0]['client_token']) !== ($env_decode[0]['JWT_SECRET']) && 
                         (strlen($env_decode[1]['USER']['current'])>4) && (strlen($env_decode[2]['PASSWORD']['current'])>4)) {
                            echo 'LOGIN-MODAL';
                            return;
