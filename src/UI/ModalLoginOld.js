@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState,useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
-
 
 function ModalLogin(props) {
   const userInputRef = useRef();
@@ -64,47 +63,46 @@ function ModalLogin(props) {
     })
     .catch((error) => console.error(error));
   }
-  
-  return (
-    <>
-      {/*<Button variant="primary" onClick={handleShow}>
-        Launch static backdrop modal
-  </Button>*/}
 
-<Modal {...props}>
-        <Modal.Header className="login">
-          <Modal.Title className="account-title login">כניסה לחשבון</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="input-filed login">
-            <div className="labels">
-              <p className="text-small">(לפחות 3 תווים)</p>
-              <p className="textLarge">שם משתמש</p>
-            </div>
-            <input
-              type="text"
+  return (
+    <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+         Login
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="grid-example">
+        <Container>
+          <Row>
+            <Col >
+            Password
+            </Col>   
+          </Row>
+          <Row>
+            <Col xs={6} md={4}>
+              <input type="text"
               value={userInputRef.current}
-              onChange={(e) => (userInputRef.current = e.target.value)}
-            />
-          </div>
-          <div className="input-filed login">
-            <div className="labels second">
-              <p className="text-small">(לפחות 3 תווים)</p>
-              <p className="textLarge">דוא"ל</p>
-            </div>
-            <input
-              type="text"
+              onChange={(e) => (userInputRef.current = e.target.value)}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col >
+            User Name
+            </Col>   
+          </Row>
+          <Row>
+            <Col xs={6} md={4}>
+              <input type="text"
               value={passInputRef.current}
-              onChange={(e) => (passInputRef.current = e.target.value)}
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="warning" onClick={closeModalLoginHandler}>
-כניסה          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+              onChange={(e) => (passInputRef.current = e.target.value)}/>
+            </Col>
+          </Row>
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={closeModalLoginHandler}>Close</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
