@@ -17,6 +17,8 @@ const UserList = () => {
   // checkboxes 2 and 4  deleteArraylist = [2, 4]
   const [deleteArraylist, setDeleteArrayList] = useState([]);
   const [showDeleteRowButton, setShowDeleteRowButton] = useState(false);
+  const [phoneIndex, setPhoneIndex] = useState(-1);
+
   const useEffectSaveRef = useRef(true);
   // crmId: crm_id,
   // crmName: crm_name,
@@ -316,7 +318,13 @@ const UserList = () => {
                     <input type="checkbox" onChange={headerCheckBoxHandler} />
                   </td>
                   <th>#</th>
-                  {state.formFields.map((field) => {
+                  {state.formFields.map((field,fieldIndex) => {
+                    if (field === "phone"){
+                      // eanough to find it once
+                      if (phoneIndex=== -1){
+                      setPhoneIndex(fieldIndex);
+                      }
+                    }
                     return <th>{field}</th>;
                   })}
                 </tr>
@@ -335,9 +343,16 @@ const UserList = () => {
                       </td>
                       <td>{userIndex + 1}</td>
                       {/* horizontal  loop */}
-                      {userLine.map((formField) => {
-                        return <td>{formField}</td>;
-                      })}
+                      {userLine.map((formField,fieldIndex) => {
+                        let hrefvalue = "tel:" + formField;
+                        return fieldIndex === phoneIndex ? 
+                          <td>
+                            <a href={hrefvalue}>{formField}</a>
+                          </td>
+                         : 
+                          <td>{formField}</td>
+                        
+                      })}                                              
                     </tr>
                   );
                 })}
