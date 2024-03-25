@@ -300,10 +300,10 @@ const UserList = () => {
           </Col>
         </Row>
         <Row>
-          <Col xs={3}>
+          <Col className="col-xs-12">
             <h3 className="text-primary"></h3>
-            <div className="flex">
-              <p className="fst-italic">here caomes the crm name{state.crmName}</p>
+            <div className="flex headline">
+              <p>{state.crmName}</p>
               
             </div>
           </Col>

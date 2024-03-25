@@ -24,6 +24,9 @@
   color: white;
 }
 
+.flex.headline p {
+  margin: 0 auto;
+}
 .App-link {
   color: #61dafb;
 }
@@ -70,6 +73,7 @@
 .App-link {
   color: #61dafb;
 }
+
 
 @keyframes App-logo-spin {
   from {
