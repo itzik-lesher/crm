@@ -133,8 +133,8 @@ const UserList = () => {
       totalUsers.push(userObject);
     });
     // include the ID and name and first_line_exist of StudentsData.json
-    //totalUsers[0] = { form_name: state.crmName, ...totalUsers[0] };
-    //totalUsers[0] = { form_name_id: state.crmId, ...totalUsers[0] };
+    totalUsers[0] = { form_name: state.crmName, ...totalUsers[0] };
+    totalUsers[0] = { form_name_id: state.crmId, ...totalUsers[0] };
     //totalUsers[0] = {
     //  first_line_existance: state.first_line_exist,
     //  ...totalUsers[0],
@@ -303,13 +303,13 @@ const UserList = () => {
           <Col xs={3}>
             <h3 className="text-primary"></h3>
             <div className="flex">
-              <p className="fst-italic">{state.crmName}</p>
+              <p className="fst-italic">here caomes the crm name{state.crmName}</p>
               
             </div>
           </Col>
         </Row>
         <Row>
-          <Col xs={12} >
+          <Col className="col-xs-12 col-md-6" >
             <h3 className="text-primary"></h3>
             <div  style={{flexDirection:"row",display:"flex"}}>                                                     
               <p style={{cursor:"pointer",textDecoration: "underline"}}onClick={export2ExcelHandler}>  יצא לקובץ אקסל </p>
