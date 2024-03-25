@@ -309,7 +309,7 @@ const UserList = () => {
           </Col>
         </Row>
         <Row>
-          <Col xs={12}>
+          <Col xs={12} >
             <h3 className="text-primary"></h3>
             <div  style={{flexDirection:"row",display:"flex"}}>                                                     
               <p style={{cursor:"pointer",textDecoration: "underline"}}onClick={export2ExcelHandler}>  יצא לקובץ אקסל </p>
@@ -342,7 +342,10 @@ const UserList = () => {
                       setNameIndex(fieldIndex);
                       }
                     }
-                   return <th className="mobileDelField">{field}</th>;
+                   {/*return <th className="mobileDelField">{field}</th>; */}
+                   return field === "phone" || field === "name"?
+                   <th >{field}</th> :
+                   <th className="mobileDelField">{field}</th>;
                   })}
                 </tr>
               </thead>
@@ -361,16 +364,9 @@ const UserList = () => {
                       <td>{userIndex + 1}</td>
                       {/* horizontal  loop */}
                       {userLine.map((formField,fieldIndex) => {
-                        let hrefvalue = "tel:" + formField;
-                        {/*return fieldIndex === phoneIndex ? 
-                          <td>
-                            <a href={hrefvalue}>{formField}</a>
-                          </td>
-                         : 
-                          <td className="mobileDelField">{formField}</td>
-                      */}
-                        return fieldIndex === phoneIndex || fieldIndex === nameIndex ?
-                        fieldIndex === phoneIndex ? 
+                        let hrefvalue = "tel:" + formField;                     
+                        return (fieldIndex === phoneIndex || fieldIndex === nameIndex )?
+                        (fieldIndex === phoneIndex )? 
                         <td>
                           <a href={hrefvalue}>{formField}</a>
                         </td> : <td>{formField}</td> : <td className="mobileDelField">{formField}</td>
