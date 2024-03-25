@@ -322,8 +322,8 @@ const UserList = () => {
         </Row>       
         <Row>
           <Col>
-            <Table striped border hover className="shadow-lg text-center">
-              <thead>
+            <Table  border hover className="shadow-lg text-center">
+              <thead bgcolor="#6B6B6B">
                 <tr>
                   <td>
                     <input type="checkbox" onChange={headerCheckBoxHandler} />

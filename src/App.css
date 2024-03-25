@@ -73,7 +73,10 @@
 .App-link {
   color: #61dafb;
 }
-
+thead>tr td,  
+thead>tr th  {
+  background-color: #dedfe0 !important;
+}
 
 @keyframes App-logo-spin {
   from {
