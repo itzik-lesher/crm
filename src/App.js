@@ -23,6 +23,7 @@ const App = () => {
   const [startupCheck, setStartupCheck] = useState(true);
   const useLayoutEffectCycle = useRef(0); 
 
+
   useLayoutEffect(()=>{
  
   // allow excution only first round

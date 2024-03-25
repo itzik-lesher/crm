@@ -18,7 +18,8 @@ const UserList = () => {
   const [deleteArraylist, setDeleteArrayList] = useState([]);
   const [showDeleteRowButton, setShowDeleteRowButton] = useState(false);
   const [phoneIndex, setPhoneIndex] = useState(-1);
-
+  const [nameIndex, setNameIndex] = useState(-1);
+  
   const useEffectSaveRef = useRef(true);
   // crmId: crm_id,
   // crmName: crm_name,
@@ -193,7 +194,16 @@ const UserList = () => {
     }
   }
 
+  useEffect(()=>{
+    let mobileDelField = document.getElementsByClassName('mobileDelField');
+    if (window.innerWidth < 800){
+      //
+      for (let i = 0; i < mobileDelField.length; i++) {
+        mobileDelField[i].style.display = "none";
+      }
+    }
 
+  })
 
   const checkboxChangedHnadler = (e) => {
     if (e.target.checked) {
@@ -276,6 +286,7 @@ const UserList = () => {
     
   };
 
+  
   return (
     <>
       
@@ -298,7 +309,7 @@ const UserList = () => {
           </Col>
         </Row>
         <Row>
-          <Col xs={6}>
+          <Col xs={12}>
             <h3 className="text-primary"></h3>
             <div  style={{flexDirection:"row",display:"flex"}}>                                                     
               <p style={{cursor:"pointer",textDecoration: "underline"}}onClick={export2ExcelHandler}>  יצא לקובץ אקסל </p>
@@ -325,7 +336,13 @@ const UserList = () => {
                       setPhoneIndex(fieldIndex);
                       }
                     }
-                    return <th>{field}</th>;
+                    if (field === "name"){
+                      // eanough to find it once
+                      if (nameIndex=== -1){
+                      setNameIndex(fieldIndex);
+                      }
+                    }
+                   return <th className="mobileDelField">{field}</th>;
                   })}
                 </tr>
               </thead>
@@ -345,13 +362,19 @@ const UserList = () => {
                       {/* horizontal  loop */}
                       {userLine.map((formField,fieldIndex) => {
                         let hrefvalue = "tel:" + formField;
-                        return fieldIndex === phoneIndex ? 
+                        {/*return fieldIndex === phoneIndex ? 
                           <td>
                             <a href={hrefvalue}>{formField}</a>
                           </td>
                          : 
-                          <td>{formField}</td>
-                        
+                          <td className="mobileDelField">{formField}</td>
+                      */}
+                        return fieldIndex === phoneIndex || fieldIndex === nameIndex ?
+                        fieldIndex === phoneIndex ? 
+                        <td>
+                          <a href={hrefvalue}>{formField}</a>
+                        </td> : <td>{formField}</td> : <td className="mobileDelField">{formField}</td>
+                         
                       })}                                              
                     </tr>
                   );
