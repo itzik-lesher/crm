@@ -178,17 +178,20 @@ const UserList = () => {
         });
       });
       //setClasname("buttonshow");
-    } else {
+    } else { // uncheck header checkbox
       //uncheck state => => amove all checkboxes to uncheck state
       let ids = Array.from(checkBoxItems).map((item, index) => {
         // uncheck each checkbox
         document.getElementById((index + 1).toString()).checked = false;
         // remove also from the deletelist
+        /*
         setDeleteArrayList((deleteArraylist) => {
-          return [...deleteArraylist].filter((element) => {
+           return [...deleteArraylist].filter((element) => {
             return element !== parseInt(index);
           });
         });
+        */
+        setDeleteArrayList([]);
       });
       //setClasname("buttonhidden");
     }
