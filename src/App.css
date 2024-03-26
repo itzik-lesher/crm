@@ -24,6 +24,9 @@
   color: white;
 }
 
+.flex.headline p {
+  margin: 0 auto;
+}
 .App-link {
   color: #61dafb;
 }
@@ -36,3 +39,142 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+/* From Old Project  */
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+thead>tr td,  
+thead>tr th  {
+  background-color: #dedfe0 !important;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.flex {
+  display: flex;
+}
+.headdanger {
+  margin-left: 1vw;
+  padding: 0 5px;
+  height: 26px;
+  line-height: 0.5em !important;
+}
+.fst-italic {
+  font-style: italic !important;
+  white-space: nowrap;
+}
+.buttonhidden {
+  display: none;
+}
+.buttonshow {
+  display: block;
+  padding: 0px 9px;
+  line-height: 2px !important;
+  max-height: 24px;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+tr.first-line-display-none {
+  display: none;
+}
+tr.first-line-display-block {
+  display: table-row;
+}
+
+.editButton {
+  margin-left: 10px !important;
+  padding: 0 5px !important;
+  color: #fff !important;
+}
+/* Modal Edit */
+
+.modal-header {
+  font-size: 20px;
+  background-color: #dedede;
+}
+.modal-body > p {
+  margin-bottom: 2px;
+  margin-top: 10px;
+}
+.modal-footer {
+  justify-content: flex-start;
+}
+.modal-button {
+  width: 20%;
+  float: left;
+}
+
+.modal-header button {
+  padding: 0 10px;
+}
+
+/* Modalcount  */
+
+.account-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.labels p {
+  float: left;
+}
+input[type="text"] {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  line-height: 2em;
+}
+.labels.second {
+  clear: both;
+}
+button.btn.btn-warning {
+  width: 100%;
+  font-size: 1.5em;
+}
+/* Login Mosal  */
+
+.input-filed.login .labels {
+  float: right;
+}
+
