@@ -124,9 +124,7 @@ const App = () => {
   }
   return (
     <>
-
-      <NavBar />
-      
+      {/*<NavBar />*/}
      {/*} <Button variant="primary" onClick={() => setLoginUser(false)}>
         Launch modal with grid
       </Button>*/}
